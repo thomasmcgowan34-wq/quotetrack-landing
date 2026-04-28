@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuoteTrack – Quote Pipeline Execution for Trade Distribution</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #1a2e4a;
+            --green: #22c55e;
+            --green-dark: #16a34a;
+            --gray-light: #f8fafc;
+            --gray-medium: #e2e8f0;
+            --gray-dark: #475569;
+            --white: #ffffff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Syne', sans-serif;
+            color: var(--navy);
+            background-color: var(--white);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-medium);
+            padding: 1rem 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span:first-child {
+            font-style: italic;
+            color: var(--navy);
+        }
+
+        .logo span:last-child {
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        nav a {
+            margin-left: 2.5rem;
+            text-decoration: none;
+            color: var(--navy);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--green);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, var(--navy) 0%, rgba(26, 46, 74, 0.95) 100%);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--green) 0%, transparent 70%);
+            opacity: 0.08;
+            border-radius: 50%;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            font-style: italic;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            color: var(--green);
+            font-style: normal;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            font-weight: 400;
+            line-height: 1.7;
+        }
+
+        .cta-primary {
+            display: inline-block;
+            background: var(--green);
+            color: var(--navy);
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-primary:hover {
+            background: var(--green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+        }
+
+        /* Content sections */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--navy);
+            font-style: italic;
+        }
+
+        .section-title span {
+            color: var(--green);
+        }
+
+        /* The Problem */
+        .problem {
+            background: var(--gray-light);
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .problem-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--green);
+            box-shadow: 0 2px 8px rgba(26, 46, 74, 0.05);
+        }
+
+        .problem-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--navy);
+        }
+
+        .problem-card p {
+            color: var(--gray-dark);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        /* The Product */
+        .product {
+            background: var(--white);
+        }
+
+        .product-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .product-text h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--navy);
+        }
+
+        .workflow-step {
+            display: flex;
+            margin-bottom: 2rem;
+            align-items: flex-start;
+        }
+
+        .workflow-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--green);
+            color: var(--white);
+            border-radius: 50%;
+            font-weight: 700;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .workflow-text h4 {
+            margin-bottom: 0.5rem;
+            color: var(--navy);
+            font-size: 1rem;
+        }
+
+        .workflow-text p {
+            color: var(--gray-dark);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .product-visual {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 16px rgba(26, 46, 74, 0.1);
+            border: 1px solid var(--gray-medium);
+        }
+
+        .visual-header {
+            background: var(--navy);
+            color: var(--white);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .visual-header h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .digest-preview {
+            background: var(--gray-light);
+            border: 1px solid var(--gray-medium);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .digest-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-medium);
+        }
+
+        .digest-item:last-child {
+            border-bottom: none;
+        }
+
+        .digest-value {
+            font-weight: 700;
+            color: var(--green);
+            font-size: 1.1rem;
+        }
+
+        .digest-label {
+            font-size: 0.85rem;
+            color: var(--gray-dark);
+        }
+
+        .action-button {
+            width: 100%;
+            background: var(--green);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        /* Outcomes */
+        .outcomes {
+            background: var(--gray-light);
+        }
+
+        .outcomes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .outcome-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(26, 46, 74, 0.05);
+            border-top: 4px solid var(--green);
+        }
+
+        .outcome-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .outcome-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--navy);
+        }
+
+        .outcome-card p {
+            color: var(--gray-dark);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        /* Sneak Peek */
+        .sneak-peek {
+            background: var(--white);
+        }
+
+        .sneak-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .sneak-text h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--navy);
+        }
+
+        .sneak-text p {
+            color: var(--gray-dark);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .sneak-features {
+            list-style: none;
+        }
+
+        .sneak-features li {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--gray-dark);
+            line-height: 1.6;
+        }
+
+        .sneak-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--green);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(26, 46, 74, 0.5);
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 8px 32px rgba(26, 46, 74, 0.2);
+        }
+
+        .close-modal {
+            color: var(--gray-dark);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--navy);
+        }
+
+        .modal h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--navy);
+            font-style: italic;
+        }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--navy);
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 0.75rem;
+            border: 1px solid var(--gray-medium);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-submit {
+            background: var(--green);
+            color: var(--white);
+            padding: 0.75rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-submit:hover {
+            background: var(--green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        }
+
+        .sneak-visual {
+            background: var(--gray-light);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid var(--gray-medium);
+        }
+
+        .email-preview {
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(26, 46, 74, 0.1);
+        }
+
+        .email-header {
+            background: var(--navy);
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .email-body {
+            padding: 2rem;
+        }
+
+        .email-title {
+            color: var(--green);
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .email-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .email-section-label {
+            font-size: 0.85rem;
+            color: var(--gray-dark);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .email-quote {
+            background: rgba(34, 197, 94, 0.05);
+            border-left: 3px solid var(--green);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 0.75rem;
+        }
+
+        .email-quote-customer {
+            font-weight: 600;
+            color: var(--navy);
+            font-size: 0.95rem;
+        }
+
+        .email-quote-value {
+            color: var(--green);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .email-quote-days {
+            color: var(--gray-dark);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .email-cta {
+            background: var(--green);
+            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        /* Footer CTA */
+        .footer-cta {
+            background: linear-gradient(135deg, var(--navy) 0%, rgba(26, 46, 74, 0.95) 100%);
+            color: var(--white);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .footer-cta h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        .footer-cta p {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer-cta a {
+            color: var(--green);
+            text-decoration: none;
+        }
+
+        .footer-cta a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--navy);
+            color: rgba(255, 255, 255, 0.6);
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--green);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .product-content,
+            .sneak-content {
+                grid-template-columns: 1fr;
+            }
+
+            nav a {
+                margin-left: 1.5rem;
+                font-size: 0.85rem;
+            }
+
+            .header-container {
+                padding: 0 1rem;
+            }
+
+            section {
+                padding: 3rem 1.5rem;
+            }
+
+            .hero {
+                padding: 3rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .email-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .problem-card,
+        .outcome-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .problem-card:hover,
+        .outcome-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(26, 46, 74, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <span>Quote</span><span>Track</span>
+            </div>
+            <nav>
+                <a href="#problem">Problem</a>
+                <a href="#product">Product</a>
+                <a href="#outcomes">Outcomes</a>
+                <a href="#sneak-peek">Sneak Peek</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-container">
+            <h1>Stop losing <span>quotes</span></h1>
+            <p class="hero-subtitle">Reps follow up daily. Pipeline stays alive. Deals close.</p>
+            <button class="cta-primary" onclick="document.getElementById('demo-modal').style.display='block'">See a Demo</button>
+        </div>
+    </section>
+
+    <!-- Problem -->
+    <section id="problem" class="problem">
+        <h2 class="section-title">The <span>problem</span></h2>
+        
+        <div class="problem-grid">
+            <div class="problem-card">
+                <h3>Hundreds of quotes issued</h3>
+                <p>Your reps quote constantly. Every week, new quotes go into the ERP. Most are never followed up.</p>
+            </div>
+            <div class="problem-card">
+                <h3>But nothing gets followed up</h3>
+                <p>Without a system, follow-up relies on rep memory. Deals slip through the cracks. Revenue disappears silently.</p>
+            </div>
+            <div class="problem-card">
+                <h3>You have no visibility</h3>
+                <p>You can't see what's stale without chasing reps. No way to know what pipeline is at risk until it's too late.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product -->
+    <section id="product" class="product">
+        <h2 class="section-title">The <span>product</span></h2>
+        
+        <div class="product-content">
+            <div class="product-text">
+                <h3>Daily digest. Daily action.</h3>
+                
+                <div class="workflow-step">
+                    <div class="workflow-number">1</div>
+                    <div class="workflow-text">
+                        <h4>Digest arrives in inbox</h4>
+                        <p>Every morning, reps see exactly what needs following up. No app. No login. Just email.</p>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="workflow-number">2</div>
+                    <div class="workflow-text">
+                        <h4>One click → pre-filled email</h4>
+                        <p>Customer name, quote value, context—all ready. Rep sends in 10 seconds.</p>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="workflow-number">3</div>
+                    <div class="workflow-text">
+                        <h4>Tag outcome. Next step locks in.</h4>
+                        <p>Long-term project? Tender? Not progressing? System auto-schedules the next follow-up.</p>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="workflow-number">4</div>
+                    <div class="workflow-text">
+                        <h4>Quote converts → task vanishes</h4>
+                        <p>When it closes in your ERP, the task removes itself. No stale follow-ups ever.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-visual">
+                <div class="visual-header">
+                    <h4>Daily Digest</h4>
+                </div>
+                <div class="digest-preview">
+                    <div class="digest-item">
+                        <span class="digest-label">Quotes to follow up</span>
+                        <span class="digest-value">4</span>
+                    </div>
+                    <div class="digest-item">
+                        <span class="digest-label">Total value at risk</span>
+                        <span class="digest-value">£18,450</span>
+                    </div>
+                    <div class="digest-item">
+                        <span class="digest-label">Days overdue (avg)</span>
+                        <span class="digest-value">12</span>
+                    </div>
+                </div>
+                <button class="action-button">View & Follow Up</button>
+                <p style="color: var(--gray-dark); font-size: 0.85rem; margin-top: 1rem; text-align: center; line-height: 1.5;">Managers also get their own digest showing all reps, all branches, all stale quotes.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Outcomes -->
+    <section id="outcomes" class="outcomes">
+        <h2 class="section-title">What <span>happens</span></h2>
+        
+        <div class="outcomes-grid">
+            <div class="outcome-card">
+                <div class="outcome-icon">📈</div>
+                <h3>Pipeline stays alive</h3>
+                <p>Quotes don't expire. Reps follow up consistently. Deals that would have died get a second look.</p>
+            </div>
+            <div class="outcome-card">
+                <div class="outcome-icon">👁️</div>
+                <h3>You have visibility</h3>
+                <p>You know what's stale, what's at risk, and which reps are following up. No chasing required.</p>
+            </div>
+            <div class="outcome-card">
+                <div class="outcome-icon">⚡</div>
+                <h3>Habit formation</h3>
+                <p>After two weeks, the digest becomes part of how your branch runs. Removing it creates operational pain.</p>
+            </div>
+            <div class="outcome-card">
+                <div class="outcome-icon">💰</div>
+                <h3>Revenue recovery</h3>
+                <p>Deals that would have been lost are now closed. Pipeline discipline compresses deal cycles.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sneak Peek -->
+    <section id="sneak-peek" class="sneak-peek">
+        <h2 class="section-title">Sneak <span>peek</span></h2>
+        
+        <div class="sneak-content">
+            <div class="sneak-text">
+                <h3>What reps actually see</h3>
+                <p>No complicated dashboard. No new system to learn. Just a simple, focused email every morning with exactly what matters.</p>
+                
+                <ul class="sneak-features">
+                    <li>Customer name and quote value</li>
+                    <li>How many days overdue</li>
+                    <li>One-click ready-to-send follow-up</li>
+                    <li>Quick outcome tag (decides next step)</li>
+                    <li>That's it. Takes 90 seconds.</li>
+                </ul>
+            </div>
+
+            <div class="sneak-visual">
+                <div class="email-preview">
+                    <div class="email-header">
+                        <span>📧 Your QuoteTrack Digest</span>
+                        <span style="font-size: 0.8rem;">8:00 AM</span>
+                    </div>
+                    <div class="email-body">
+                        <div class="email-title">4 quotes to follow up today</div>
+                        <div class="email-section">
+                            <div class="email-section-label">📌 Priority</div>
+                            <div class="email-quote">
+                                <div class="email-quote-customer">Acme Builders</div>
+                                <div class="email-quote-value">£8,450</div>
+                                <div class="email-quote-days">30 days overdue</div>
+                            </div>
+                        </div>
+                        <div class="email-section">
+                            <div class="email-section-label">Next Steps</div>
+                            <div class="email-quote">
+                                <div class="email-quote-customer">Builders Direct</div>
+                                <div class="email-quote-value">£6,200</div>
+                                <div class="email-quote-days">12 days since quote</div>
+                            </div>
+                        </div>
+                        <a href="#" class="email-cta">Follow Up & Tag Outcome</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <section id="cta-section" class="footer-cta">
+        <h2>Ready to stop losing quotes?</h2>
+        <p>Let's show you how it works. Schedule a demo or reach out—we'll have you running in days.</p>
+        <button class="cta-primary" onclick="document.getElementById('demo-modal').style.display='block'">Request a Demo</button>
+        <p style="margin-top: 1.5rem; font-size: 0.95rem;">Questions? <a href="mailto:thomas@quotetrack.io">thomas@quotetrack.io</a></p>
+    </section>
+
+    <!-- Demo Modal -->
+    <div id="demo-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="document.getElementById('demo-modal').style.display='none'">&times;</span>
+            <h2>Request a <span style="color: var(--green);">demo</span></h2>
+            
+            <form class="modal-form" action="https://formspree.io/f/mgorjjjd" method="POST">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <input type="text" id="company" name="company">
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Tell us about your business</label>
+                    <textarea id="message" name="message" placeholder="Number of reps, branches, ERP system, etc."></textarea>
+                </div>
+                
+                <button type="submit" class="form-submit">Send Demo Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Close modal when clicking outside -->
+    <script>
+        window.onclick = function(event) {
+            const modal = document.getElementById('demo-modal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
