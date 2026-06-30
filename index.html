@@ -120,6 +120,62 @@
             font-weight: 400;
             line-height: 1.7;
         }
+        /* Trusted By */
+        .trusted-by {
+            background: var(--gray-light);
+            padding: 3rem 2rem;
+            border-bottom: 1px solid var(--gray-medium);
+        }
+        .trusted-by-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .trusted-by-label {
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray-dark);
+            margin-bottom: 2rem;
+        }
+        .trusted-by-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+        .trusted-by-row img {
+            height: 42px;
+            width: auto;
+            object-fit: contain;
+        }
+        .trusted-by-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .trusted-by-card-name {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--navy);
+            letter-spacing: -0.3px;
+        }
+        .trusted-by-card-desc {
+            font-size: 0.8rem;
+            color: var(--gray-dark);
+            margin-top: 0.15rem;
+        }
+        @media (max-width: 600px) {
+            .trusted-by-row {
+                gap: 2.5rem;
+            }
+            .trusted-by-row img {
+                height: 32px;
+            }
+        }
         .cta-primary {
             display: inline-block;
             background: var(--green);
@@ -687,6 +743,19 @@
             <h1>Every lost <span>quote</span> is a lost sale</h1>
             <p class="hero-subtitle">QuoteTrack connects to your ERP and surfaces at-risk quotes before they go cold, so your team acts on the right opportunities at the right time.</p>
             <button class="cta-primary" onclick="document.getElementById('demo-modal').style.display='block'">Book a Demo</button>
+        </div>
+    </section>
+    <!-- Trusted By -->
+    <section class="trusted-by">
+        <div class="trusted-by-container">
+            <p class="trusted-by-label">Trusted by builders merchants across Ireland and the UK</p>
+            <div class="trusted-by-row">
+                <img src="assets/south-coast-logo.png" alt="South Coast Building Supplies">
+                <div class="trusted-by-card">
+                    <span class="trusted-by-card-name">26-Branch Merchant Group</span>
+                    <span class="trusted-by-card-desc">Ireland &amp; UK</span>
+                </div>
+            </div>
         </div>
     </section>
     <!-- Problem -->
