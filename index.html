@@ -681,6 +681,67 @@
             color: var(--navy);
             line-height: 1.5;
         }
+        /* Quote Carousel */
+        .quote-block {
+            background: var(--navy-deep);
+            padding: 4.5rem 2.5rem;
+        }
+        .quote-block-inner {
+            max-width: 720px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .quote-carousel {
+            position: relative;
+            min-height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .quote-slide {
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+        }
+        .quote-slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            position: relative;
+        }
+        .quote-block blockquote {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.85);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+        .quote-block cite {
+            font-size: 0.78rem;
+            font-weight: 700;
+            font-style: normal;
+            color: var(--green);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+        .quote-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        .quote-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.25);
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: background 0.3s ease;
+        }
+        .quote-dot.active { background: var(--green); }
         /* Footer CTA */
         .footer-cta {
             background: var(--navy-deep);
@@ -858,6 +919,40 @@
             </div>
         </div>
     </section>
+    <!-- Quote Carousel -->
+    <div class="quote-block">
+        <div class="quote-block-inner">
+            <div class="quote-carousel">
+                <div class="quote-slide active">
+                    <blockquote>"We have been looking around the market for the last two years — and what we found is that the CRM-first systems are overkill, and the other bits are finance tools more so than sales rep enablers. There is a gap."</blockquote>
+                    <cite>Sales Director · Irish Builders Merchants</cite>
+                </div>
+                <div class="quote-slide">
+                    <blockquote>"I've never seen so much data and so many spreadsheets. But so little insight."</blockquote>
+                    <cite>Commercial Director · UK Builders Merchants</cite>
+                </div>
+                <div class="quote-slide">
+                    <blockquote>"The big hole in it is that we don't know when a quotation is issued, what job it's for, and then we can't chase it up."</blockquote>
+                    <cite>National Sales Director · Irish Builders Merchants</cite>
+                </div>
+                <div class="quote-slide">
+                    <blockquote>"Quote follow-up is something we have struggled with — and it's something that any place I've worked, and this is my fifth merchants, has struggled with."</blockquote>
+                    <cite>Group Sales Manager · Irish Builders Merchants</cite>
+                </div>
+                <div class="quote-slide">
+                    <blockquote>"It's very easy to lose hold of things. It's easy to get access to see things that I can't find in the ERP."</blockquote>
+                    <cite>Sales Rep · UK Builders Merchants</cite>
+                </div>
+            </div>
+            <div class="quote-dots">
+                <button class="quote-dot active" onclick="goToSlide(0)"></button>
+                <button class="quote-dot" onclick="goToSlide(1)"></button>
+                <button class="quote-dot" onclick="goToSlide(2)"></button>
+                <button class="quote-dot" onclick="goToSlide(3)"></button>
+                <button class="quote-dot" onclick="goToSlide(4)"></button>
+            </div>
+        </div>
+    </div>
     <!-- Product -->
     <section id="product" class="product">
         <p class="section-eyebrow">How it works</p>
@@ -1060,6 +1155,25 @@
     </div>
     <!-- Close modal when clicking outside -->
     <script>
+        let current = 0;
+        const slides = document.querySelectorAll('.quote-slide');
+        const dots = document.querySelectorAll('.quote-dot');
+        let timer = setInterval(nextSlide, 4000);
+
+        function goToSlide(n) {
+            slides[current].classList.remove('active');
+            dots[current].classList.remove('active');
+            current = n;
+            slides[current].classList.add('active');
+            dots[current].classList.add('active');
+            clearInterval(timer);
+            timer = setInterval(nextSlide, 4000);
+        }
+
+        function nextSlide() {
+            goToSlide((current + 1) % slides.length);
+        }
+
         window.onclick = function(event) {
             const modal = document.getElementById('demo-modal');
             if (event.target == modal) {
