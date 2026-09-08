@@ -1,433 +1,343 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-IE">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About – QuoteTrack</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --navy: #1a2e4a;
-            --navy-deep: #0e1c30;
-            --green: #22c55e;
-            --green-dark: #16a34a;
-            --gray-light: #f4f6f8;
-            --gray-medium: #e2e6ea;
-            --gray-dark: #5b6877;
-            --white: #ffffff;
-        }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            color: var(--navy);
-            background: var(--white);
-            line-height: 1.6;
-        }
-        h1, h2, h3, h4 { font-family: 'Inter Tight', 'Inter', sans-serif; }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About QuoteTrack · two sides of the same counter</title>
+<meta name="description" content="We started QuoteTrack because the trade has been running on systems that record what happened, and nothing that drives what happens next.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="About QuoteTrack · two sides of the same counter">
+<meta property="og:description" content="One of us grew up in a family hardware business. The other built software embedded with operations and trading teams. We started by listening, not building.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.quotetrack.io/about.html">
 
-        /* Header */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: var(--white);
-            border-bottom: 1px solid var(--gray-medium);
-            padding: 1rem 0;
-        }
-        .header-container {
-            max-width: 1140px;
-            margin: 0 auto;
-            padding: 0 2.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-family: 'Inter Tight', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            text-decoration: none;
-        }
-        .logo span:first-child { color: var(--navy); }
-        .logo span:last-child { color: var(--green); }
-        nav a {
-            margin-left: 2.5rem;
-            text-decoration: none;
-            color: var(--navy);
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: color 0.2s ease;
-        }
-        nav a:hover, nav a.active { color: var(--green); }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap">
+<link rel="stylesheet" href="assets/tokens.css">
+<link rel="stylesheet" href="assets/site.css">
 
-        /* Hero */
-        .page-hero {
-            background: var(--navy-deep);
-            padding: 5rem 2.5rem 4.5rem;
-            position: relative;
-        }
-        .page-hero::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--green) 0%, transparent 60%);
-        }
-        .page-hero-inner {
-            max-width: 720px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        .eyebrow {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--green);
-            margin-bottom: 1rem;
-        }
-        .page-hero h1 {
-            font-weight: 800;
-            font-size: 2.75rem;
-            color: var(--white);
-            letter-spacing: -0.02em;
-            line-height: 1.1;
-            margin-bottom: 1.25rem;
-        }
-        .page-hero p {
-            font-size: 1.1rem;
-            color: rgba(255,255,255,0.65);
-            line-height: 1.7;
-            max-width: 520px;
-            margin: 0 auto;
-        }
+<style>
+  .hero { background: var(--brand); color: #fff; padding: clamp(60px, 9vw, 100px) 0 clamp(52px, 7vw, 84px); }
+  .hero__inner { display: grid; gap: 24px; justify-items: start; }
+  .hero__inner > * { max-width: 56ch; }
+  .hero h1 { max-width: 16ch; }
+  .hero .lede { color: var(--brand-soft-text); }
 
-        /* Story */
-        .story {
-            max-width: 680px;
-            margin: 0 auto;
-            padding: 3.5rem 2.5rem 4.5rem;
-        }
-        .story p {
-            font-size: 1.05rem;
-            line-height: 1.85;
-            color: var(--gray-dark);
-            margin-bottom: 1.6rem;
-        }
-        .story p:last-child { margin-bottom: 0; }
-        .story p strong { color: var(--navy); font-weight: 600; }
+  /* ---- story ---- */
+  .story { display: grid; gap: 20px; max-width: 64ch; margin-top: 34px; }
+  .story p { font-size: 17.5px; color: var(--text-secondary); }
+  .story p:first-child { color: var(--text-primary); font-weight: 600; font-size: 19px; }
 
-        /* Quote Carousel */
-        .quote-block {
-            background: var(--navy-deep);
-            padding: 5rem 2.5rem;
-            position: relative;
-        }
-        .quote-block-inner {
-            max-width: 720px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        .quote-carousel {
-            position: relative;
-            min-height: 180px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .quote-slide {
-            position: absolute;
-            width: 100%;
-            opacity: 0;
-            transition: opacity 0.6s ease;
-            pointer-events: none;
-        }
-        .quote-slide.active {
-            opacity: 1;
-            pointer-events: auto;
-            position: relative;
-        }
-        .quote-block blockquote {
-            font-size: 1.15rem;
-            line-height: 1.8;
-            color: rgba(255,255,255,0.85);
-            font-style: italic;
-            margin-bottom: 1.5rem;
-        }
-        .quote-block cite {
-            font-size: 0.78rem;
-            font-weight: 700;
-            font-style: normal;
-            color: var(--green);
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-        }
-        .quote-dots {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-top: 2rem;
-        }
-        .quote-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.25);
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            transition: background 0.3s ease;
-        }
-        .quote-dot.active {
-            background: var(--green);
-        }
-        @media (max-width: 480px) {
-            .quote-carousel { min-height: 220px; }
-            .quote-block blockquote { font-size: 1rem; }
-        }
+  /* ---- founders ---- */
+  .founders { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); margin-top: 38px; }
+  .founder { display: grid; grid-template-columns: 96px 1fr; gap: 20px; align-items: start; }
+  .founder img {
+    width: 96px; height: 96px;
+    border-radius: var(--radius-card);
+    object-fit: cover;
+    background: var(--surface-subtle);
+  }
+  .founder__role { font-size: 12px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--signal-deep); margin-bottom: 5px; }
+  .founder h3 { margin-bottom: 8px; }
+  .founder p { color: var(--text-secondary); font-size: 15.5px; }
+  .founder a.linkedin {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 12px; font-size: 14px; font-weight: 600;
+    color: var(--text-secondary); text-decoration: none;
+  }
+  .founder a.linkedin:hover { color: var(--brand); }
+  @media (max-width: 420px) {
+    .founder { grid-template-columns: 1fr; }
+  }
 
-        /* Team */
-        .team {
-            max-width: 1140px;
-            margin: 0 auto;
-            padding: 5.5rem 2.5rem;
-        }
-        .team .eyebrow { color: var(--green-dark); margin-bottom: 0.75rem; }
-        .team h2 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--navy);
-            letter-spacing: -0.01em;
-            margin-bottom: 3rem;
-        }
-        .team-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-        .team-card {
-            padding: 2.5rem;
-            border: 1px solid var(--gray-medium);
-            border-radius: 10px;
-        }
-        .team-card-top {
-            display: flex;
-            align-items: center;
-            gap: 1.25rem;
-            margin-bottom: 1.5rem;
-        }
-        .team-avatar {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-        .team-name {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 0.2rem;
-        }
-        .team-role {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--green-dark);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .team-card a.linkedin {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            margin-top: 1rem;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--gray-dark);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-        .team-card a.linkedin:hover { color: var(--navy); }
-        .team-card a.linkedin svg { flex-shrink: 0; }
-
-        /* Footer CTA */
-        .footer-cta {
-            background: var(--navy-deep);
-            color: var(--white);
-            padding: 4.5rem 2.5rem;
-            text-align: center;
-        }
-        .footer-cta h2 {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            letter-spacing: -0.01em;
-        }
-        .footer-cta p {
-            font-size: 0.97rem;
-            color: rgba(255,255,255,0.65);
-            margin-bottom: 2rem;
-        }
-        .cta-primary {
-            display: inline-block;
-            background: var(--green);
-            color: var(--navy-deep);
-            padding: 0.85rem 2rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.95rem;
-            transition: background 0.2s ease;
-            border: none;
-            cursor: pointer;
-        }
-        .cta-primary:hover { background: var(--green-dark); }
-        .email-link { color: var(--green); text-decoration: none; }
-        .email-link:hover { text-decoration: underline; }
-
-        /* Footer */
-        footer {
-            background: var(--navy-deep);
-            color: rgba(255,255,255,0.4);
-            padding: 1.5rem 2.5rem;
-            text-align: center;
-            font-size: 0.82rem;
-            border-top: 1px solid rgba(255,255,255,0.07);
-        }
-        footer a { color: var(--green); text-decoration: none; }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .page-hero { padding: 3.5rem 1.5rem 3rem; }
-            .page-hero h1 { font-size: 2.1rem; }
-            .story { padding: 3.5rem 1.5rem; }
-            .quote-block { padding: 3.5rem 1.5rem; }
-            .team { padding: 3.5rem 1.5rem; }
-            .team-grid { grid-template-columns: 1fr; }
-            nav a { margin-left: 1.25rem; font-size: 0.82rem; }
-        }
-        @media (max-width: 480px) {
-            nav { display: none; }
-            .header-container { padding: 0 1.25rem; }
-            .page-hero h1 { font-size: 1.85rem; }
-        }
-    </style>
+  /* ---- belief ---- */
+  .belief { max-width: 38ch; }
+  .belief blockquote {
+    margin: 0;
+    font-size: clamp(24px, 3.4vw, 36px);
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+    text-wrap: balance;
+  }
+  .belief p { margin-top: 16px; color: var(--brand-soft-text); font-size: 18px; }
+</style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-container">
-            <a href="index.html" class="logo">
-                <span>Quote</span><span>Track</span>
+
+<a class="sr-only" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="wordmark" href="index.html" aria-label="QuoteTrack home">
+      <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="7" fill="#08131f"></rect>
+        <rect x="8" y="8" width="4" height="16" rx="2" fill="#39df79"></rect>
+        <rect x="15" y="8" width="9" height="4" rx="2" fill="#39df79" opacity="0.45"></rect>
+      </svg>
+      <span class="wordmark__text">Quote<i>Track</i></span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+      <span class="sr-only">Menu</span>
+      <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M3 6h14M3 10h14M3 14h14"></path>
+      </svg>
+    </button>
+
+    <nav class="nav" id="primary-nav" aria-label="Primary">
+      <a href="index.html#problem">Problem</a>
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#platform">Platform</a>
+      <a href="index.html#who">Who it's for</a>
+      <a href="about.html" aria-current="page">About</a>
+      <button class="btn btn--primary btn--sm nav__cta" type="button" data-open-modal="demo">Book a demo</button>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap hero__inner">
+      <div class="rail"></div>
+      <h1>Two sides of the same counter.</h1>
+      <p class="lede">Thomas grew up in his family's hardware business and then spent four years in sales software. Henry spent years building tools embedded with the operations and trading teams of a global trading firm. We started QuoteTrack because the trade has been running on systems that record what happened, and nothing that drives what happens next.</p>
+    </div>
+  </section>
+
+  <!-- ============ STORY ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="rail rail--light"></div>
+        <p class="eyebrow">How we got here</p>
+      </div>
+      <div class="story">
+        <p>We started by listening, not building.</p>
+        <p>Forty-plus conversations with sales directors, reps and IT directors across Ireland and the UK, and eight days stood behind counters and sat in branch offices. We didn't pitch. We asked people about their day.</p>
+        <p>The same thing came back every time. The quote goes out, and then it goes quiet. Not because anyone is bad at their job, but because there is nothing in the stack whose job it is to catch it. The ERP records it. The CRM, if there is one, gets used as a tick-box. And Friday afternoon disappears into admin.</p>
+        <p>The trade built this country brick by brick, and has been overlooked by software the whole time. Reps here are some of the sharpest operators you'll meet, selling through tenders, planning delays and supply shocks. They deserve tools built for how they actually work, and that is the only thing we're trying to do.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW WE BUILD ============ -->
+  <section class="section section--paper">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="rail rail--light"></div>
+        <p class="eyebrow">How we build</p>
+        <h2>Three rules we hold ourselves to.</h2>
+      </div>
+      <div class="grid grid--3" style="margin-top:38px">
+        <div class="card">
+          <h3>Keep it simple</h3>
+          <p>A customer told us he'd looked at seven systems and every one was overkill. The test we hold ourselves to: could someone new on the counter understand it?</p>
+        </div>
+        <div class="card">
+          <h3>Push, not pull</h3>
+          <p>If a rep has to log in to get value, they won't. The list comes to them, every morning, wherever they are.</p>
+        </div>
+        <div class="card">
+          <h3>Never surveillance</h3>
+          <p>This is a tool for the rep, not a stick to beat them with. We design against that every time, and we always will.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOUNDERS ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="rail rail--light"></div>
+        <p class="eyebrow">Who's behind it</p>
+      </div>
+
+      <div class="founders">
+        <div class="founder">
+          <img src="assets/thomas-mcgowan.png" alt="Thomas McGowan" width="96" height="96">
+          <div>
+            <p class="founder__role">Co-founder &amp; CEO</p>
+            <h3>Thomas McGowan</h3>
+            <p>Grew up in his family's hardware business, then spent four years at Gong selling sales software across Europe. He has seen this problem from both sides of the counter: the branch that sends the quote, and the software that was meant to chase it.</p>
+            <!-- TODO: paste the existing LinkedIn URL from the current about.html -->
+            <a class="linkedin" href="#" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.6h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.76V21h-4v-5.7c0-1.36-.03-3.1-1.9-3.1-1.9 0-2.2 1.47-2.2 3v5.8h-4V9Z"></path></svg>
+              LinkedIn
             </a>
-            <nav>
-                <a href="index.html#problem">Problem</a>
-                <a href="index.html#product">How it works</a>
-                <a href="index.html#outcomes">Built for your team</a>
-                <a href="index.html#sneak-peek">Platform</a>
-                <a href="about.html" class="active">About</a>
-            </nav>
+          </div>
         </div>
-    </header>
 
-    <!-- Hero -->
-    <section class="page-hero">
-        <div class="page-hero-inner">
-            <p class="eyebrow">About us</p>
-            <h1>Two sides of the same problem</h1>
-            <p>One founder grew up in the trade. One built tools for people who couldn't afford to get things wrong. QuoteTrack is what happens when those two things meet.</p>
+        <div class="founder">
+          <img src="assets/henry-cullen.png" alt="Henry Cullen" width="96" height="96">
+          <div>
+            <p class="founder__role">Co-founder &amp; CTO</p>
+            <h3>Henry Cullen</h3>
+            <p>Ex-Apple, and ex-Susquehanna International Group, where he built internal software embedded with operations, finance and trading teams, running the whole cycle from sitting with the user to getting the thing adopted. He builds the simplest thing that fixes the problem.</p>
+            <!-- TODO: paste the existing LinkedIn URL from the current about.html -->
+            <a class="linkedin" href="#" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.6h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.76V21h-4v-5.7c0-1.36-.03-3.1-1.9-3.1-1.9 0-2.2 1.47-2.2 3v5.8h-4V9Z"></path></svg>
+              LinkedIn
+            </a>
+          </div>
         </div>
-    </section>
-
-    <!-- Team -->
-    <section class="team">
-        <p class="eyebrow">The team</p>
-        <h2>The people behind it</h2>
-        <div class="team-grid">
-            <div class="team-card">
-                <div class="team-card-top">
-                    <img src="assets/thomas-mcgowan.png" alt="Thomas McGowan" class="team-avatar">
-                    <div>
-                        <div class="team-name">Thomas McGowan</div>
-                        <div class="team-role">Co-Founder &amp; CEO</div>
-                    </div>
-                </div>
-                <p>Thomas grew up in the family hardware trade in Donegal before spending four years at Gong as Senior Account Executive, EMEA. He founded QuoteTrack to solve the problem he lived on both sides of: a trade industry full of opportunity, running without the tools to capture it.He brings an innate and unqiue understanding of the industry and the complexities of how it operates. </p>
-                <a href="https://www.linkedin.com/in/thomas-mcgowan-92a369172/" target="_blank" class="linkedin">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                    Connect on LinkedIn
-                </a>
-            </div>
-            <div class="team-card">
-                <div class="team-card-top">
-                    <img src="assets/henry-cullen.png" alt="Henry Cullen" class="team-avatar">
-                    <div>
-                        <div class="team-name">Henry Cullen</div>
-                        <div class="team-role">Co-Founder &amp; CTO</div>
-                    </div>
-                </div>
-                <p>Henry cut his teeth where the stakes are highest — re-engineering business processes at Apple and building software for the trading desks at SIG, where systems move real money and there's no room to get it wrong. Now he's gone from trading to the trade: building for the reps and merchants in an industry software forgot. A Dean's and Quercus scholar who topped his Business Information Systems class, he pairs high-stakes engineering with a rare feel for the people who use it.</p>
-                <a href="https://www.linkedin.com/in/henry-cullen-web/" target="_blank" class="linkedin">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                    Connect on LinkedIn
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Story -->
-    <div class="story">
-        <p class="eyebrow" style="color: var(--green-dark); margin-bottom: 0.75rem;">The story</p>
-        <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; margin-bottom: 2rem;">Two sides of the same problem</h2>
-        <p>Thomas grew up around builders merchants and trade distributors in Donegal. He watched reps buried in notebooks and spreadsheets just to track who to call, and branch managers with no real read on what was moving through their business until it was too late to act.</p>
-        <p>Years later, working in B2B sales tech at Gong, he saw what's possible when a team has the right system underneath them. <strong>The trade had been left in the dark.</strong> No one had built for them — not really. The CRM-first tools were overkill. Everything else was a finance system dressed up as a sales tool.</p>
-        <p>Henry left Susquehanna International Group, where he built internal tools for finance and trading operations, to go build for a different kind of trade. He'd spent years solving the same core problem at one of the world's most demanding environments: turning data that exists into action that happens.</p>
-        <p><strong>QuoteTrack is what they built together.</strong> Not a system of record. A system of action — sitting on top of the ERP, closing the gap between insight and actually doing something about it.</p>
+      </div>
     </div>
+  </section>
 
-    <!-- Quote -->
-    <div class="quote-block">
-        <div class="quote-block-inner">
-            <blockquote>"We have been looking around the market for the last two years — and what we found is that the CRM-first systems are overkill, and the other bits are finance tools more so than sales rep enablers. There is a gap."</blockquote>
-            <cite>Sales Director · Irish Builders Merchants</cite>
-        </div>
+  <!-- ============ BELIEF ============ -->
+  <section class="section section--brand">
+    <div class="wrap">
+      <div class="rail" style="margin-bottom:24px"></div>
+      <div class="belief">
+        <blockquote>Insight you can't act on is just another spreadsheet to feel guilty about.</blockquote>
+        <p>A system for action, not another dashboard.</p>
+      </div>
     </div>
+  </section>
 
-    <!-- Footer CTA -->
-    <section class="footer-cta">
-        <h2>Want to see it in action?</h2>
-        <p>QuoteTrack is live and driving results with customers today.</p>
-        <a href="index.html" class="cta-primary">Book a 30-minute call</a>
-        <p style="margin-top: 1.5rem; font-size: 0.88rem; color: rgba(255,255,255,0.5);">Questions? <a href="mailto:thomas@quotetrack.io" class="email-link">thomas@quotetrack.io</a></p>
-    </section>
+  <!-- ============ FOOTER CTA ============ -->
+  <section class="section section--paper section--tight">
+    <div class="wrap">
+      <div class="section-head section-head--wide">
+        <h2>Want to see it on your own quotes?</h2>
+        <p class="lede">Twenty minutes, and we'll show you the daily list.</p>
+      </div>
+      <div class="btn-row" style="margin-top:22px">
+        <button class="btn btn--primary" type="button" data-open-modal="demo">Book a demo</button>
+      </div>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>© 2026 QuoteTrack Limited · <a href="mailto:thomas@quotetrack.io">thomas@quotetrack.io</a></p>
-    </footer>
-    <script>
-        let current = 0;
-        const slides = document.querySelectorAll('.quote-slide');
-        const dots = document.querySelectorAll('.quote-dot');
-        let timer = setInterval(nextSlide, 4000);
+</main>
 
-        function goToSlide(n) {
-            slides[current].classList.remove('active');
-            dots[current].classList.remove('active');
-            current = n;
-            slides[current].classList.add('active');
-            dots[current].classList.add('active');
-            clearInterval(timer);
-            timer = setInterval(nextSlide, 4000);
-        }
+<footer class="site-footer">
+  <div class="wrap site-footer__inner">
+    <a class="wordmark wordmark--onbrand" href="index.html" aria-label="QuoteTrack home">
+      <svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="7" fill="#ffffff" opacity="0.1"></rect>
+        <rect x="8" y="8" width="4" height="16" rx="2" fill="#39df79"></rect>
+        <rect x="15" y="8" width="9" height="4" rx="2" fill="#39df79" opacity="0.45"></rect>
+      </svg>
+      <span class="wordmark__text">Quote<i>Track</i></span>
+    </a>
+    <nav aria-label="Footer">
+      <a href="about.html">About</a>
+      <a href="index.html#platform">Platform</a>
+      <a href="https://app.quotetrack.io">Sign in</a>
+    </nav>
+    <p style="width:100%;font-size:13px">&copy; <span id="year">2026</span> QuoteTrack Ltd. Registered in Ireland.</p>
+  </div>
+</footer>
 
-        function nextSlide() {
-            goToSlide((current + 1) % slides.length);
-        }
-    </script>
+<!-- ============ DEMO MODAL ============ -->
+<div class="modal" id="modal-demo" hidden role="dialog" aria-modal="true" aria-labelledby="demo-title">
+  <div class="modal__panel">
+    <button class="modal__close" type="button" data-close-modal aria-label="Close">&times;</button>
+    <h3 id="demo-title">Book a demo</h3>
+    <p>Twenty minutes. We'll show you the daily list and what it would look like on your quotes.</p>
+    <form action="https://formspree.io/f/mgorjjjd" method="POST" data-form="demo">
+      <div class="field"><label for="d-name">Name</label><input id="d-name" name="name" type="text" required autocomplete="name"></div>
+      <div class="field"><label for="d-company">Company</label><input id="d-company" name="company" type="text" required autocomplete="organization"></div>
+      <div class="field"><label for="d-email">Work email</label><input id="d-email" name="email" type="email" required autocomplete="email"></div>
+      <div class="field"><label for="d-msg">Anything we should know? (optional)</label><textarea id="d-msg" name="message"></textarea></div>
+      <button class="btn btn--primary" type="submit" style="width:100%">Request a demo</button>
+      <p class="form-status" data-status role="status"></p>
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  var toggle = document.querySelector('.nav-toggle');
+  var nav = document.getElementById('primary-nav');
+  function setNav(open) {
+    toggle.setAttribute('aria-expanded', String(open));
+    nav.hidden = !open;
+  }
+  function syncNav() {
+    if (window.matchMedia('(max-width: 880px)').matches) {
+      if (toggle.getAttribute('aria-expanded') !== 'true') nav.hidden = true;
+    } else {
+      nav.hidden = false;
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  }
+  toggle.addEventListener('click', function () {
+    setNav(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+  nav.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A' && window.matchMedia('(max-width: 880px)').matches) setNav(false);
+  });
+  window.addEventListener('resize', syncNav);
+  syncNav();
+
+  var lastFocus = null;
+  function openModal(id) {
+    var m = document.getElementById('modal-' + id);
+    if (!m) return;
+    lastFocus = document.activeElement;
+    m.hidden = false;
+    document.body.style.overflow = 'hidden';
+    var first = m.querySelector('input');
+    if (first) first.focus();
+  }
+  function closeModal(m) {
+    m.hidden = true;
+    document.body.style.overflow = '';
+    if (lastFocus) lastFocus.focus();
+  }
+  document.addEventListener('click', function (e) {
+    var opener = e.target.closest('[data-open-modal]');
+    if (opener) { e.preventDefault(); openModal(opener.getAttribute('data-open-modal')); return; }
+    var closer = e.target.closest('[data-close-modal]');
+    if (closer) { closeModal(closer.closest('.modal')); return; }
+    if (e.target.classList.contains('modal')) closeModal(e.target);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    var open = document.querySelector('.modal:not([hidden])');
+    if (open) closeModal(open);
+  });
+
+  document.querySelectorAll('form[data-form]').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var status = form.querySelector('[data-status]');
+      var button = form.querySelector('button[type="submit"]');
+      var original = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Sending…';
+      status.className = 'form-status';
+      status.textContent = '';
+
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' }
+      }).then(function (res) {
+        if (!res.ok) throw new Error('bad response');
+        form.reset();
+        status.className = 'form-status form-status--ok';
+        status.textContent = 'Thanks, we’ll be in touch within a day.';
+      }).catch(function () {
+        status.className = 'form-status form-status--err';
+        status.textContent = 'Something went wrong. Email us at hello@quotetrack.io and we’ll sort it.';
+      }).then(function () {
+        button.disabled = false;
+        button.textContent = original;
+      });
+    });
+  });
+})();
+</script>
 </body>
 </html>
