@@ -1,0 +1,78 @@
+/* ==========================================================================
+   QuoteTrack design tokens - website mirror
+   --------------------------------------------------------------------------
+   SOURCE OF TRUTH: the app. These values mirror `tokens/design-tokens.json`
+   in github.com/thomasmcgowan34-wq/quotetrack, which generates
+   `app/tokens.generated.css` via `npm run tokens:build`.
+
+   The app stores tokens in OKLCH. This file carries the resolved sRGB hex so
+   the static site needs no build step. Values below were read from the running
+   app at qa.quotetrack.io on 2026-09-07.
+
+   RULE: never invent a colour here. When the app's tokens change, re-read them
+   and update this file - the website is a consumer of the design system, not a
+   second source of it. Components use the SEMANTIC tokens only, never the
+   palette. See docs/reference/design-language.md.
+   ========================================================================== */
+
+:root {
+  /* --- brand ------------------------------------------------------------ */
+  --brand: #08131f;
+  --brand-hover: #121f2e;
+  --brand-foreground: #ffffff;
+  --brand-soft-surface: #e8eef5;
+  --brand-soft-border: #d8e1eb;
+  --brand-soft-text: #aebfcf;   /* on brand - AAA for poor sight */
+
+  /* --- the single accent ------------------------------------------------ */
+  --signal: #39df79;            /* on dark. Rail/bar only - once per surface */
+  --signal-deep: #1d733e;       /* on light */
+
+  /* --- surfaces --------------------------------------------------------- */
+  --background: #ffffff;
+  --surface: #ffffff;
+  --surface-subtle: #e8eef5;
+  --surface-muted: #f5f9fc;
+
+  /* --- ink -------------------------------------------------------------- */
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-muted: #6b7280;
+  --text-disabled: #d1d5db;
+
+  /* --- lines ------------------------------------------------------------ */
+  --border: #e4eaf1;
+  --border-subtle: #eef3f7;
+  --border-strong: #d1d5db;
+  --ring: #08131f;              /* the one focus ring, 2px, focus-visible only */
+
+  /* --- feedback (semantic, not brand) ----------------------------------- */
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --info: #2563eb;
+
+  /* --- type ------------------------------------------------------------- */
+  --font-sans: "Schibsted Grotesk", ui-sans-serif, system-ui, -apple-system,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Syne", var(--font-sans);   /* WORDMARK ONLY */
+
+  /* --- shape ------------------------------------------------------------ */
+  --radius-control: 6px;        /* buttons, inputs, menus */
+  --radius-card: 12px;          /* cards, panels, modals - in-app ceiling */
+  --radius-pill: 999px;
+
+  /* --- elevation - nothing heavier than this --------------------------- */
+  --shadow-raised: 0 1px 2px 0 rgb(8 19 31 / 0.05);
+  --shadow-overlay: 0 10px 30px -10px rgb(8 19 31 / 0.25);
+
+  /* --- motion - three durations, one curve ----------------------------- */
+  --motion-fast: 150ms;
+  --motion-base: 250ms;
+  --motion-slow: 300ms;
+  --ease: cubic-bezier(0.2, 0, 0.2, 1);
+
+  /* --- layout ----------------------------------------------------------- */
+  --maxw: 1140px;
+  --gutter: 24px;
+}
