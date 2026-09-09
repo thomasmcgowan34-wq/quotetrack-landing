@@ -489,95 +489,32 @@ html.js .reveal-4 { transition-delay: 240ms; }
 .partners__row .logo-ignite { height: 30px; }
 
 /* ==========================================================================
-   2 — The gap (convergence)
+   2 — The gap (the problem, in numbers)
    ========================================================================== */
-.channels {
+.stats {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
   margin-top: clamp(2rem, 5vw, 3rem);
 }
-@media (min-width: 640px) { .channels { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (min-width: 1024px) { .channels { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1rem; } }
-/* Deliberately NOT cards — a top rule and a label, so this reads as the head
-   of a diagram rather than the identical-icon-card grid that gives a
-   generated landing page away. */
-.channel {
-  list-style: none;
-  border-top: 2px solid var(--brand-4);
-  padding: 0.75rem 0 0;
-  display: flex;
-  flex-direction: column;
+@media (min-width: 640px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+/* Not cards — a top rule and a label, like the head of a table. No icon grid. */
+.stat { border-top: 2px solid var(--brand-4); padding-top: 1rem; }
+.stat dt {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--blue-grey);
+}
+.stat dd {
+  margin-top: 0.45rem;
+  display: grid;
   gap: 0.45rem;
 }
-.channel svg { width: 20px; height: 20px; color: var(--blue-grey); flex: none; }
-.channel span {
-  font-size: 0.875rem; font-weight: 600; color: var(--white); line-height: 1.3;
+.stat dd .stat__n {
+  font-size: clamp(1.75rem, 3.6vw, 2.5rem);
+  font-weight: 800; color: var(--white);
+  letter-spacing: -0.03em; line-height: 1.05;
 }
-
-.converge { display: block; width: 100%; height: clamp(72px, 11vw, 130px); fill: none; }
-.converge path {
-  fill: none;
-  stroke: var(--steel);
-  stroke-width: 2;
-  stroke-linecap: round;
-}
-html.js .converge path { stroke-dasharray: 1; stroke-dashoffset: 1; }
-@supports (animation-timeline: view()) {
-  html.js .converge path {
-    animation: draw linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 34%;
-  }
-}
-@supports not (animation-timeline: view()) {
-  html.js .converge path { transition: stroke-dashoffset 900ms var(--ease); }
-  html.js .converge.is-in path { stroke-dashoffset: 0; }
-}
-@keyframes draw { to { stroke-dashoffset: 0; } }
-
-.funnel-node {
-  border: 1px solid var(--signal);
-  border-radius: var(--r-panel);
-  background: var(--brand-1);
-  padding: clamp(1.25rem, 3vw, 1.75rem);
-  text-align: center;
-  max-width: 620px;
-  margin-inline: auto;
-}
-.funnel-node .h3 { color: var(--white); }
-.funnel-node p { margin-top: 0.4rem; color: var(--brand-soft); }
-.funnel-node .cost {
-  display: block;
-  margin-top: 0.85rem;
-  font-size: clamp(1.5rem, 3.4vw, 2rem);
-  font-weight: 800;
-  color: var(--signal);
-  letter-spacing: -0.02em;
-}
-.funnel-tail {
-  display: grid;
-  gap: 1rem;
-  margin-top: 1rem;
-  max-width: 620px;
-  margin-inline: auto;
-}
-.funnel-erp {
-  border: 1px solid var(--brand-4);
-  border-radius: var(--r-panel);
-  padding: 1rem 1.25rem;
-  text-align: center;
-}
-.funnel-erp strong { color: var(--white); display: block; font-size: 1rem; }
-.turn {
-  margin-top: clamp(2rem, 5vw, 3rem);
-  font-size: clamp(1.25rem, 3vw, 1.875rem);
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: -0.02em;
-  line-height: 1.25;
-  max-width: 24ch;
-}
+.stat dd .stat__p { font-size: 0.9375rem; color: var(--brand-soft); }
 
 /* ==========================================================================
    3 — The cost
@@ -620,88 +557,130 @@ html.js .converge path { stroke-dasharray: 1; stroke-dashoffset: 1; }
 }
 
 /* ==========================================================================
-   4 — How it works (the flow)
+   4 — The turn (as-is → supercharged)
    ========================================================================== */
-.flow {
+.duel { margin-top: clamp(2rem, 5vw, 3rem); }
+
+.duel__stage {
   display: grid;
-  gap: 1rem;
-  margin-top: clamp(2rem, 5vw, 3rem);
-  position: relative;
+  gap: clamp(1rem, 2.5vw, 1.5rem);
 }
-@media (min-width: 1000px) {
-  .flow { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem; }
-  /* Chevrons in the gutters: this is a flow, not four feature cards. */
-  .flow-step { position: relative; }
-  .flow-step:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    right: -1.3rem;
-    top: 50%;
-    width: 9px;
-    height: 9px;
-    border-top: 2px solid var(--steel);
-    border-right: 2px solid var(--steel);
-    transform: translateY(-50%) rotate(45deg);
-  }
-}
-.flow-step {
+@media (min-width: 760px) { .duel__stage { grid-template-columns: 1fr 1fr; } }
+
+.duel__panel {
   border: 1px solid var(--brand-4);
   border-radius: var(--r-panel);
   background: var(--brand-1);
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  display: grid;
+  gap: 1.25rem;
 }
-.flow-step__k {
+
+.duel__panel-k {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--blue-grey);
+}
+.duel__panel-k::before { content: ""; width: 3px; height: 14px; background: var(--steel); flex: none; }
+.duel__panel-k--super { color: var(--brand-soft); }
+.duel__panel-k--super::before { background: var(--signal); }
+
+.duel__channels {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.7rem;
+}
+.duel__channels li {
+  font-size: 0.8125rem; font-weight: 600; color: var(--brand-soft);
+  border: 1px solid var(--brand-4); border-radius: 999px;
+  padding: 0.28rem 0.75rem; line-height: 1.4;
+}
+
+.duel__row { display: grid; gap: 0.9rem; }
+@media (min-width: 820px) {
+  .duel__row {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  }
+}
+.duel__arrow { width: 20px; height: 20px; color: var(--steel); justify-self: center; align-self: center; }
+@media (max-width: 819px) { .duel__arrow { transform: rotate(90deg); } }
+
+.duel__node {
+  border: 1px solid var(--brand-4);
+  border-radius: var(--r-panel);
+  background: var(--brand);
+  padding: 1.1rem 1.2rem;
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+}
+.duel__node-k {
   font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--blue-grey);
 }
-.flow-step h3 { font-size: 1.0625rem; }
-.flow-step p { font-size: 0.9375rem; color: var(--brand-soft); }
-
-/* The ERP block — the objection-killer. Deliberately the loudest card. */
-.flow-step--erp {
-  background: var(--surface-subtle);
-  border-color: var(--surface-subtle);
-  --focus-ring: var(--brand);
+.duel__node strong {
+  font-size: 1.0625rem; font-weight: 700; color: var(--white);
+  letter-spacing: -0.015em; line-height: 1.25;
 }
-.flow-step--erp .flow-step__k { color: var(--steel); }
-.flow-step--erp h3 { color: var(--brand); }
-.flow-step--erp p { color: var(--steel-2); }
-.flow-step--erp .pill {
-  align-self: flex-start;
-  background: var(--brand);
-  color: var(--white);
-}
+.duel__node-sub { font-size: 0.875rem; color: var(--brand-soft); line-height: 1.5; }
 
-.flow-rail {
-  position: relative;
-  height: 3px;
-  background: var(--brand-3);
-  margin-top: 1.75rem;
+/* The ERP node reads as the dead end in "today", and as the thing that
+   stays put once QuoteTrack is there. */
+.duel__panel--asis .duel__node--erp strong { color: var(--brand-soft); }
+.duel__panel--super .duel__node--erp strong { color: var(--white); }
+
+.duel__node--out { align-items: start; }
+.duel__node--out .pill { justify-self: start; }
+
+/* The supercharged engine is the one green moment. */
+.duel__panel--super .duel__node--engine { border-left: 3px solid var(--signal); }
+.duel__panel--super .duel__channels li { color: var(--white); border-color: var(--steel); }
+
+.pill--cold { background: var(--brand-4); color: var(--brand-soft); }
+.pill--won { background: var(--signal); color: var(--brand); }
+
+.duel__caption {
+  font-size: 0.9375rem; font-weight: 600; color: var(--brand-soft);
+  line-height: 1.5;
+}
+.duel__panel--super .duel__caption { color: var(--white); }
+
+/* Toggle — two segmented tabs. Hidden without JS, when both panels sit
+   side by side. */
+.duel__controls { display: none; margin-top: 1.25rem; gap: 0.5rem; }
+html.js .duel__controls { display: flex; }
+.duel__tab {
+  border: 1px solid var(--brand-4);
+  background: transparent;
+  color: var(--brand-soft);
   border-radius: 999px;
-  overflow: hidden;
+  padding: 0.45rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 38px;
+  transition: background-color var(--motion-fast) var(--ease),
+              color var(--motion-fast) var(--ease),
+              border-color var(--motion-fast) var(--ease);
 }
-.flow-rail__fill {
-  position: absolute;
-  inset: 0;
+.duel__tab[aria-pressed="true"] {
   background: var(--signal);
-  transform-origin: 0 50%;
-  transform: scaleX(1);
+  border-color: var(--signal);
+  color: var(--brand);
 }
-@supports (animation-timeline: view()) {
-  html.js .flow-rail__fill {
-    transform: scaleX(0);
-    animation: rail-x linear both;
-    animation-timeline: view();
-    animation-range: entry 20% cover 60%;
-  }
-}
-@supports not (animation-timeline: view()) {
-  html.js .flow-rail__fill { transform: scaleX(0); transition: transform 900ms var(--ease); }
-  html.js .flow-rail.is-in .flow-rail__fill { transform: scaleX(1); }
-}
+
+/* With JS + motion the two panels overlap and crossfade. The inactive panel is
+   fully hidden (opacity 0), never dimmed — text rests only at 1 or 0. */
+html.js .duel__stage { grid-template-columns: 1fr; }
+html.js .duel__panel { grid-area: 1 / 1; }
+html.js .duel__panel { transition: opacity 620ms var(--ease); }
+html.js .duel__panel--super { opacity: 0; pointer-events: none; }
+html.js .duel.is-super .duel__panel--asis { opacity: 0; pointer-events: none; }
+html.js .duel.is-super .duel__panel--super { opacity: 1; pointer-events: auto; }
+
 @keyframes rail-x { to { transform: scaleX(1); } }
 
 .flow-line {
@@ -912,6 +891,31 @@ html.js .converge path { stroke-dasharray: 1; stroke-dashoffset: 1; }
 }
 .counter span { color: var(--white); font-weight: 600; }
 
+/* The positioning axis from the deck: records → drives. */
+.records-drives {
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
+  border: 1px solid var(--brand-4);
+  border-radius: var(--r-panel);
+  background: var(--brand-1);
+  padding: clamp(1.25rem, 3vw, 1.5rem);
+  margin-top: 2rem;
+  max-width: 720px;
+}
+.rd-item { display: grid; gap: 0.3rem; flex: 1; align-content: center; }
+.rd-label {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--blue-grey);
+}
+.rd-text { font-size: 1.125rem; font-weight: 700; color: var(--white); letter-spacing: -0.015em; }
+.rd-item--us .rd-text { color: var(--signal); }
+.rd-arrow { align-self: center; color: var(--steel); font-size: 1.5rem; line-height: 1; }
+@media (max-width: 640px) {
+  .records-drives { flex-direction: column; }
+  .rd-arrow { transform: rotate(90deg); align-self: flex-start; }
+}
+
 /* ==========================================================================
    8 — Scale
    ========================================================================== */
@@ -1028,8 +1032,8 @@ html.js .converge path { stroke-dasharray: 1; stroke-dashoffset: 1; }
     animation-timeline: auto !important;
   }
   html.js .reveal { opacity: 1 !important; transform: none !important; }
-  html.js .converge path { stroke-dashoffset: 0 !important; }
-  html.js .flow-rail__fill,
   html.js .journey__rail i { transform: scaleX(1) !important; }
+  /* The duel is static under reduced motion: html.js is never added, so the
+     two panels already sit side by side and the controls are hidden. */
   .scroll-rail { display: none; }
 }

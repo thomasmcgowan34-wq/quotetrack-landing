@@ -10,6 +10,56 @@ token value changes there, change it in `assets/site.css` here too.
 
 ---
 
+## Second pass — 2026-09-10 (the turn, and a tighter problem story)
+
+Henry asked for two things on top of the first build: (1) a big focus on the
+**problem → fix** arc the deck runs, and (2) an animated visual that takes a
+business **from "as-is" to "supercharged"** — in a loop, on scroll, or on hover.
+Thomas had also pushed a parallel `site-refresh` branch to the same repo, which
+was mined for copy and for a couple of structural ideas, not adopted wholesale.
+
+### What changed
+
+- **§2 "The gap"** no longer carries the six-channel convergence diagram. It is
+  now a sharp problem statement plus **four numbers** (deck slide 3, generalised):
+  *Up to 3 hours* · *Under half* get a second contact · *Six* ways a request
+  arrives · *None* chased by the ERP. The seven-days number stays in §3, where it
+  is held as the single count-up moment — no figure appears twice.
+- **§4 "How it works"** is now **the turn**: an animated `as-is → supercharged`
+  before/after. It is the deck's slide 2 and slide 4 rendered as one morphing
+  diagram — the same six channels, the same ERP, the same rep, but two states:
+  `Today` (one rep, 2–3 hours by hand → ERP records it → *gone cold*) and
+  `With QuoteTrack` (captures/prices/stages → ERP **unchanged** → *won*).
+- **§7 "Why us"** gained the deck's positioning axis as a callout — *your ERP
+  records what happened, QuoteTrack drives what happens next*.
+
+### How the turn works
+
+- Two self-contained `<figure>` panels share an identical skeleton (channels →
+  engine → ERP → result). With JS + motion they overlap in one grid cell and
+  **crossfade**; an auto-loop holds `Today` ~3.4s then `With QuoteTrack` ~4.4s,
+  pausing on hover and on keyboard focus, and starting only once the section is
+  in view. Two `aria-pressed` tabs let the reader flip it by hand.
+- The inactive panel rests at `opacity: 0`, never at a partial value — text sits
+  only at 1 or 0, so the "no faded text" rule holds. It is hidden with opacity +
+  `pointer-events`, **not** `visibility`, so both states stay in the
+  accessibility tree and screen readers read the before/after as one narrative.
+- **Reduced motion / no JS** (`html.js` is not added either way): the two panels
+  sit side by side (stacked under 760px) as a plain labelled comparison, and the
+  tabs are hidden. Verified: the page reads complete, the loop simply never runs.
+
+### Confidentiality, checked against the deck
+
+A term sweep of the deck's prospect names (Murdocks, Chadwicks, Kellihers, Rexel,
+CORE, HPC, IPC, Beesley & Fildes, MD O'Shea, Trade Electric Group), the named
+advisors, the €4.2m / €750k / price-ladder / ARR figures, and the named discovery
+quotes returned **nothing** in either page or the CSS. Traction is shown through
+the sanctioned signals only: *live in production with a paying design partner*,
+South Coast Building Supplies, the Ignite programme, and *40+ discovery calls*.
+Thomas's five discovery quotes (adopted in spirit) are all role-attributed.
+
+---
+
 ## Files
 
 | File | What it is |
@@ -153,3 +203,11 @@ the two count-ups are longer, which the brief allows for a landing page.
   reachable (`tabindex="0"`, `role="group"`).
 
 Re-measure rather than trusting these numbers cold.
+
+**Re-verified 2026-09-10 after the second pass:** no console errors; no horizontal
+overflow at 375/768/1280 (scrollWidth ≤ clientWidth); the duel panels overlap
+pixel-exactly and the crossfade toggles opacity 1↔0; the auto-loop cycles
+`Today → With QuoteTrack → Today`; no raw hex was added (still the 15 token
+values); the banned words ("pipeline"/"dormant") remain absent from both pages.
+The new text pairs all clear 4.5:1 by computation — the closest are the uppercase
+kickers (`#8ca0b8` on `#08131f`, 6.98:1) and `#aebfcf` on `#121f2e` (8.84:1).
