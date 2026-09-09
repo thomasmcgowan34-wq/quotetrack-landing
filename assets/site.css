@@ -1,0 +1,1035 @@
+/* ==========================================================================
+   QuoteTrack — landing site
+   Design system: ../docs/reference/design-language.md (app repo)
+   Tokens:        ../tokens/design-tokens.json — values copied, not imported.
+   Brand:         navy #08131f + signal green #39df79 (2026-09-07 refresh)
+
+   Two rules that govern nearly every choice below:
+   1. Green on a light ground is --signal-deep, never --signal (#39df79 is
+      1.75:1 on white).
+   2. The focus ring follows the ground it is drawn on: green on dark, navy
+      on light. --focus-ring inherits, and .panel-light flips it.
+   ========================================================================== */
+
+/* ---------- Fonts ---------- */
+/* Schibsted Grotesk only. The wordmark is the shipped SVG with the Syne
+   glyphs already outlined (../public/logo-*.svg), so Syne is never loaded —
+   which makes "no Syne outside the wordmark" impossible to violate. */
+@font-face {
+  font-family: 'Schibsted Grotesk';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('fonts/schibsted-grotesk-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Schibsted Grotesk';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('fonts/schibsted-grotesk-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ---------- Tokens ---------- */
+:root {
+  /* Brand ground + the deck's navy ramp */
+  --brand: #08131f;
+  --brand-1: #121f2e;
+  --brand-2: #16273a;
+  --brand-3: #1d3046;
+  --brand-4: #24384e;
+  --steel: #31506c;
+  --steel-2: #4e637a;
+
+  /* Blue-grey ramp */
+  --blue-grey: #8ca0b8;
+  --brand-soft: #aebfcf;
+  --blue-grey-light: #b9c4d3;
+  --surface-subtle: #e8eef5;
+  --white: #ffffff;
+
+  /* Accent — two greens, one per ground */
+  --signal: #39df79;
+  --signal-deep: #1d733e;
+
+  /* Light-ground ink */
+  --text-primary: #111827;
+
+  /* Motion — the system's three durations, and nothing else for UI */
+  --motion-fast: 150ms;
+  --motion-base: 250ms;
+  --motion-slow: 300ms;
+  --ease: cubic-bezier(0.2, 0, 0.15, 1);
+
+  /* Radius — 6px controls, 12px panels, full pills. Ceiling 12px. */
+  --r-control: 6px;
+  --r-panel: 12px;
+
+  /* z-index scale, same bands as the app */
+  --z-sticky: 10;
+  --z-overlay: 40;
+
+  /* The focus ring, on the page's default (dark) ground */
+  --focus-ring: var(--signal);
+
+  --container: 1200px;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --section-y: clamp(4rem, 9vw, 7.5rem);
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  scrollbar-gutter: stable;
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  font-family: 'Schibsted Grotesk', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--brand-soft);
+  background: var(--brand);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+/* Tabular figures ONLY where digits change in place, so the number does not
+   jitter as it counts. Measured 2026-09-09: Schibsted Grotesk's `tnum` also
+   tabularises the comma and the full stop, so a global rule renders "€47,000"
+   as "€47 , 000" and "seat." as "seat ." — see REBUILD-NOTES.md. */
+.bignum, .counter b { font-variant-numeric: tabular-nums; }
+
+img, svg { display: block; max-width: 100%; }
+img { height: auto; }
+a { color: inherit; }
+button, input, textarea, select { font: inherit; color: inherit; }
+
+h1, h2, h3, h4 {
+  color: var(--white);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+p { text-wrap: pretty; }
+
+/* ---------- Focus: green on dark, navy on light, 2px, no offset ---------- */
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 0;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+/* 🔴 The third case, measured 2026-09-09. A control whose OWN FILL is one of
+   the brand pair defeats both rings: with no offset the ring is drawn on the
+   page ground and hard against the fill, so it has to clear both.
+     green button on navy — green ring 1.00:1 vs the fill (invisible, this page
+       shipped it before it was measured); navy ring 1.00:1 vs the ground.
+     navy button on light — mirrored, exactly.
+   Every palette value was measured against both. signal-deep is the only one
+   that clears 3:1 in either direction:
+     #1d733e — 3.18:1 on navy   / 3.36:1 on the green fill
+     #1d733e — 5.03:1 on #e8eef5 / 3.18:1 on the navy fill
+   Runner-up #4e637a is 3.02/3.54 and is not an accent. So one rule covers both
+   grounds, and no third ring colour is introduced. */
+.btn--primary,
+.skip-link,
+.section--light .btn--primary { --focus-ring: var(--signal-deep); }
+
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: 0;
+  transform: translateY(-120%);
+  z-index: var(--z-overlay);
+  background: var(--signal);
+  color: var(--brand);
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0.6rem 1rem;
+  border-radius: 0 0 var(--r-control) var(--r-control);
+}
+.skip-link:focus { transform: translateY(0); }
+
+/* ---------- Layout ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.section { padding-block: var(--section-y); position: relative; }
+/* Anchored sections must land clear of the sticky header. */
+.section[id], .hero, [id] { scroll-margin-top: 88px; }
+.section + .section { border-top: 1px solid var(--brand-3); }
+
+/* A light section: everything inside flips ground-dependent values. */
+.section--light {
+  background: var(--surface-subtle);
+  color: var(--text-primary);
+  --focus-ring: var(--brand);
+}
+.section--light h1, .section--light h2,
+.section--light h3, .section--light h4 { color: var(--brand); }
+
+/* ---------- Section label — the design system's green rail (§3.1) ---------- */
+.label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue-grey);
+  margin-bottom: 1.25rem;
+}
+.label::before {
+  content: "";
+  width: 3px;
+  height: 15px;
+  background: var(--signal);
+  flex: none;
+}
+.section--light .label { color: var(--steel-2); }
+.section--light .label::before { background: var(--signal-deep); }
+
+/* ---------- Type scale ---------- */
+.display {
+  font-size: clamp(2.5rem, 7.2vw, 5rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+.h2 {
+  font-size: clamp(1.75rem, 4.2vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+}
+.h3 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.015em; }
+.lead {
+  font-size: clamp(1.0625rem, 1.6vw, 1.3125rem);
+  line-height: 1.55;
+  color: var(--brand-soft);
+  max-width: 62ch;
+}
+.section--light .lead { color: var(--steel-2); }
+.body { font-size: 1rem; line-height: 1.65; }
+.small { font-size: 0.875rem; line-height: 1.55; }
+.accent { color: var(--signal); }
+.section--light .accent { color: var(--signal-deep); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.75rem 1.35rem;
+  border-radius: var(--r-control);
+  border: 1px solid transparent;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--motion-fast) var(--ease),
+              border-color var(--motion-fast) var(--ease),
+              color var(--motion-fast) var(--ease);
+}
+/* Primary on dark: green fill, navy label — 10.69:1 */
+.btn--primary { background: var(--signal); color: var(--brand); }
+.btn--primary:hover { background: var(--white); }
+/* Primary on light: navy fill, white label — 18.70:1 */
+.section--light .btn--primary { background: var(--brand); color: var(--white); }
+.section--light .btn--primary:hover { background: var(--brand-1); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--white);
+  border-color: var(--brand-4);
+}
+.btn--ghost:hover { border-color: var(--brand-soft); background: var(--brand-1); }
+.section--light .btn--ghost { color: var(--brand); border-color: var(--blue-grey-light); }
+.section--light .btn--ghost:hover { background: var(--white); border-color: var(--steel); }
+
+.btn--sm { min-height: 38px; padding: 0.45rem 0.9rem; font-size: 0.875rem; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+/* ---------- Panels ---------- */
+.panel {
+  background: var(--brand-1);
+  border: 1px solid var(--brand-4);
+  border-radius: var(--r-panel);
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+}
+/* A light panel on the dark page — real product UI is light, so green
+   inside it must be --signal-deep and the focus ring flips to navy. */
+.panel-light {
+  background: var(--white);
+  color: var(--text-primary);
+  border: 1px solid var(--blue-grey-light);
+  border-radius: var(--r-panel);
+  --focus-ring: var(--brand);
+}
+.panel-light h3, .panel-light h4 { color: var(--brand); }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   Motion
+   Default state is VISIBLE. The hidden start state is opted into only when
+   JS is running (html.js), so the page is complete with JS disabled.
+   Nothing containing text rests below opacity 1.
+   ========================================================================== */
+/* Content reveals are a ONE-SHOT IntersectionObserver, deliberately not a
+   view() timeline. A view() timeline makes visibility a function of scroll
+   position, so text un-reveals on the way back up and anything below a deep
+   link lands at opacity 0. Copy must never depend on where the scrollbar is.
+   Scroll-driven CSS is used below for the things that genuinely track scroll:
+   the three rails and the convergence draw, all of them decorative.
+   The hidden start state is opted into only by html.js, which is set only when
+   IntersectionObserver exists and motion is not reduced. */
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 520ms var(--ease), transform 520ms var(--ease);
+}
+html.js .reveal.is-in { opacity: 1; transform: none; }
+html.js .reveal-2 { transition-delay: 80ms; }
+html.js .reveal-3 { transition-delay: 160ms; }
+html.js .reveal-4 { transition-delay: 240ms; }
+
+/* ---------- The green rail that draws itself down the page ---------- */
+.scroll-rail {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 100vh;
+  background: var(--brand-3);
+  z-index: var(--z-sticky);
+  pointer-events: none;
+}
+.scroll-rail__fill {
+  width: 100%;
+  height: 100%;
+  background: var(--signal);
+  transform-origin: 0 0;
+  transform: scaleY(var(--scroll-progress, 0));
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-rail__fill {
+    transform: scaleY(0);
+    animation: rail-draw linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+@keyframes rail-draw { to { transform: scaleY(1); } }
+@media (max-width: 1023px) { .scroll-rail { display: none; } }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: var(--brand);
+  border-bottom: 1px solid var(--brand-3);
+}
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 68px;
+  padding-block: 0.75rem;
+}
+.wordmark { flex: none; display: block; }
+.wordmark img { width: 150px; }
+.site-nav {
+  display: none;
+  margin-left: auto;
+  gap: 1.75rem;
+  align-items: center;
+}
+.site-nav a {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--brand-soft);
+  text-decoration: none;
+  padding-block: 0.35rem;
+  transition: color var(--motion-fast) var(--ease);
+}
+.site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--white); }
+.site-header .btn { margin-left: auto; }
+.site-nav + .btn { margin-left: 0; }
+@media (min-width: 900px) {
+  .site-nav { display: flex; }
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  padding-block: clamp(3.5rem, 9vw, 7rem) clamp(3rem, 6vw, 4.5rem);
+  overflow: hidden;
+}
+/* A measured tick rule — industrial, no gradient fill, no blobs.
+   Painted as the hero's own background rather than an absolutely-positioned
+   overlay: an overlay made axe report "background could not be determined"
+   for all 12 hero elements, i.e. the most important text on the site sat in
+   an automated-check blind spot. The fade is the same navy at alpha 0, so it
+   introduces no colour. */
+.hero {
+  background-image:
+    linear-gradient(180deg, rgba(8, 19, 31, 0) 0%, var(--brand) 78%),
+    repeating-linear-gradient(90deg, var(--brand-3) 0 1px, transparent 1px 72px);
+}
+.hero__inner { position: relative; }
+.hero__flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid var(--brand-4);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem 0.4rem 0.7rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
+}
+.hero__flag .dot {
+  width: 8px; height: 8px; border-radius: 999px;
+  background: var(--signal); flex: none;
+}
+.hero__grid { display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); }
+@media (min-width: 1040px) {
+  .hero__grid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: end;
+    column-gap: clamp(2rem, 5vw, 4rem);
+  }
+  .hero__col-b { padding-bottom: 0.35rem; }
+}
+.hero .display { max-width: 15ch; }
+.hero__sub {
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  line-height: 1.4;
+  color: var(--white);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  max-width: 30ch;
+}
+.hero__anchor { margin-top: 1rem; max-width: 52ch; }
+.hero .actions { margin-top: clamp(1.5rem, 3vw, 2rem); }
+
+.hero__facts {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: 1fr;
+  background: var(--brand-3);
+  border: 1px solid var(--brand-3);
+  border-radius: var(--r-panel);
+  overflow: hidden;
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+}
+.hero__fact { background: var(--brand); padding: 1.1rem 1.25rem; }
+.hero__fact dt {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--blue-grey);
+}
+.hero__fact dd {
+  margin-top: 0.35rem; font-size: 1.0625rem; font-weight: 600; color: var(--white);
+}
+@media (min-width: 700px) { .hero__facts { grid-template-columns: repeat(3, 1fr); } }
+
+/* ---------- Partner logos ---------- */
+.partners { padding-block: clamp(2rem, 4vw, 3rem); }
+.partners__label {
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  color: var(--blue-grey);
+  margin-bottom: 1.25rem;
+}
+.partners__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(1.5rem, 5vw, 3.5rem);
+}
+.partners__row img {
+  /* Partner marks are supplied dark-on-transparent; on the navy ground they
+     are rendered as solid white rather than faded, so no text sits under 1. */
+  filter: brightness(0) invert(1);
+  width: auto;
+}
+.partners__row .logo-scb { height: 34px; }
+.partners__row .logo-ignite { height: 30px; }
+
+/* ==========================================================================
+   2 — The gap (convergence)
+   ========================================================================== */
+.channels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: clamp(2rem, 5vw, 3rem);
+}
+@media (min-width: 640px) { .channels { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .channels { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1rem; } }
+/* Deliberately NOT cards — a top rule and a label, so this reads as the head
+   of a diagram rather than the identical-icon-card grid that gives a
+   generated landing page away. */
+.channel {
+  list-style: none;
+  border-top: 2px solid var(--brand-4);
+  padding: 0.75rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.channel svg { width: 20px; height: 20px; color: var(--blue-grey); flex: none; }
+.channel span {
+  font-size: 0.875rem; font-weight: 600; color: var(--white); line-height: 1.3;
+}
+
+.converge { display: block; width: 100%; height: clamp(72px, 11vw, 130px); fill: none; }
+.converge path {
+  fill: none;
+  stroke: var(--steel);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+html.js .converge path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+@supports (animation-timeline: view()) {
+  html.js .converge path {
+    animation: draw linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 34%;
+  }
+}
+@supports not (animation-timeline: view()) {
+  html.js .converge path { transition: stroke-dashoffset 900ms var(--ease); }
+  html.js .converge.is-in path { stroke-dashoffset: 0; }
+}
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+.funnel-node {
+  border: 1px solid var(--signal);
+  border-radius: var(--r-panel);
+  background: var(--brand-1);
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  text-align: center;
+  max-width: 620px;
+  margin-inline: auto;
+}
+.funnel-node .h3 { color: var(--white); }
+.funnel-node p { margin-top: 0.4rem; color: var(--brand-soft); }
+.funnel-node .cost {
+  display: block;
+  margin-top: 0.85rem;
+  font-size: clamp(1.5rem, 3.4vw, 2rem);
+  font-weight: 800;
+  color: var(--signal);
+  letter-spacing: -0.02em;
+}
+.funnel-tail {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+  max-width: 620px;
+  margin-inline: auto;
+}
+.funnel-erp {
+  border: 1px solid var(--brand-4);
+  border-radius: var(--r-panel);
+  padding: 1rem 1.25rem;
+  text-align: center;
+}
+.funnel-erp strong { color: var(--white); display: block; font-size: 1rem; }
+.turn {
+  margin-top: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(1.25rem, 3vw, 1.875rem);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  max-width: 24ch;
+}
+
+/* ==========================================================================
+   3 — The cost
+   ========================================================================== */
+.cost-grid {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  align-items: center;
+}
+@media (min-width: 900px) { .cost-grid { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr); } }
+.bignum {
+  font-size: clamp(6rem, 19vw, 15rem);
+  font-weight: 800;
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  color: var(--signal);
+  font-variant-numeric: tabular-nums;
+}
+.bignum__unit {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: clamp(1.125rem, 2.2vw, 1.5rem);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+.bignum__src {
+  margin-top: 0.9rem;
+  font-size: 0.8125rem;
+  color: var(--blue-grey);
+  max-width: 34ch;
+}
+.cost-note {
+  margin-top: 1.5rem;
+  border-left: 3px solid var(--steel);
+  padding-left: 1rem;
+  color: var(--white);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   4 — How it works (the flow)
+   ========================================================================== */
+.flow {
+  display: grid;
+  gap: 1rem;
+  margin-top: clamp(2rem, 5vw, 3rem);
+  position: relative;
+}
+@media (min-width: 1000px) {
+  .flow { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem; }
+  /* Chevrons in the gutters: this is a flow, not four feature cards. */
+  .flow-step { position: relative; }
+  .flow-step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: -1.3rem;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    border-top: 2px solid var(--steel);
+    border-right: 2px solid var(--steel);
+    transform: translateY(-50%) rotate(45deg);
+  }
+}
+.flow-step {
+  border: 1px solid var(--brand-4);
+  border-radius: var(--r-panel);
+  background: var(--brand-1);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.flow-step__k {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--blue-grey);
+}
+.flow-step h3 { font-size: 1.0625rem; }
+.flow-step p { font-size: 0.9375rem; color: var(--brand-soft); }
+
+/* The ERP block — the objection-killer. Deliberately the loudest card. */
+.flow-step--erp {
+  background: var(--surface-subtle);
+  border-color: var(--surface-subtle);
+  --focus-ring: var(--brand);
+}
+.flow-step--erp .flow-step__k { color: var(--steel); }
+.flow-step--erp h3 { color: var(--brand); }
+.flow-step--erp p { color: var(--steel-2); }
+.flow-step--erp .pill {
+  align-self: flex-start;
+  background: var(--brand);
+  color: var(--white);
+}
+
+.flow-rail {
+  position: relative;
+  height: 3px;
+  background: var(--brand-3);
+  margin-top: 1.75rem;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.flow-rail__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--signal);
+  transform-origin: 0 50%;
+  transform: scaleX(1);
+}
+@supports (animation-timeline: view()) {
+  html.js .flow-rail__fill {
+    transform: scaleX(0);
+    animation: rail-x linear both;
+    animation-timeline: view();
+    animation-range: entry 20% cover 60%;
+  }
+}
+@supports not (animation-timeline: view()) {
+  html.js .flow-rail__fill { transform: scaleX(0); transition: transform 900ms var(--ease); }
+  html.js .flow-rail.is-in .flow-rail__fill { transform: scaleX(1); }
+}
+@keyframes rail-x { to { transform: scaleX(1); } }
+
+.flow-line {
+  margin-top: 1.5rem;
+  font-size: clamp(1.125rem, 2.6vw, 1.625rem);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+/* ==========================================================================
+   5 — Built and live (product)
+   ========================================================================== */
+.product-grid { display: grid; gap: clamp(1.5rem, 4vw, 2.5rem); margin-top: clamp(2rem, 5vw, 3rem); }
+@media (min-width: 1000px) { .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.product-item { display: flex; flex-direction: column; gap: 0.6rem; }
+.product-item h3 { color: var(--white); }
+.product-item > p { color: var(--brand-soft); font-size: 0.9375rem; }
+.product-item .panel-light { margin-top: 1rem; }
+@media (min-width: 1000px) { .product-item .panel-light { margin-top: auto; } }
+
+/* --- Faithful recreation of the app's own surfaces, in the app's tokens --- */
+.ui { padding: 0.875rem; display: grid; gap: 0.625rem; }
+.ui__bar {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 0.75rem; padding: 0 0.125rem 0.5rem;
+  border-bottom: 1px solid var(--surface-subtle);
+}
+.ui__title { font-size: 0.9375rem; font-weight: 700; color: var(--brand); }
+.ui__meta { font-size: 0.75rem; color: var(--steel-2); }
+
+.q-card {
+  border: 1px solid var(--surface-subtle);
+  border-radius: var(--r-control);
+  padding: 0.7rem 0.75rem;
+  display: grid;
+  gap: 0.4rem;
+}
+.q-top { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; }
+.q-name { font-size: 0.875rem; font-weight: 700; color: var(--brand); }
+.q-value { font-size: 0.875rem; font-weight: 700; color: var(--brand); }
+.q-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; font-size: 0.75rem; color: var(--steel-2); }
+.q-age {
+  border-radius: 999px; padding: 0.1rem 0.5rem; font-weight: 700; font-size: 0.75rem;
+  background: var(--surface-subtle); color: var(--brand);
+}
+.q-age--hot { background: var(--brand); color: var(--white); }
+.q-actions { display: flex; flex-wrap: wrap; gap: 0.35rem; padding-top: 0.15rem; }
+.q-btn {
+  border: 1px solid var(--blue-grey-light);
+  background: var(--white);
+  color: var(--steel-2);
+  border-radius: var(--r-control);
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: default;
+}
+.q-btn--on { background: var(--brand); border-color: var(--brand); color: var(--white); }
+.q-btn--go { border-color: var(--signal-deep); color: var(--signal-deep); font-weight: 700; }
+
+.kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
+.kpi { border: 1px solid var(--surface-subtle); border-radius: var(--r-control); padding: 0.65rem 0.7rem; }
+.kpi dt {
+  /* 12px floor: a KPI label is informative, so it may not sit at 11px. */
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--steel-2);
+}
+.kpi dd {
+  margin-top: 0.2rem; font-size: 1.25rem; font-weight: 800; color: var(--brand);
+  letter-spacing: -0.02em;
+}
+.kpi__sub { font-size: 0.75rem; color: var(--steel-2); font-weight: 400; letter-spacing: 0; text-transform: none; }
+.ui__note {
+  border: 1px solid var(--blue-grey-light);
+  border-left: 3px solid var(--signal-deep);
+  border-radius: var(--r-control);
+  padding: 0.55rem 0.7rem;
+  font-size: 0.8125rem;
+  color: var(--text-primary);
+}
+.ui__caption {
+  font-size: 0.75rem;
+  color: var(--blue-grey);
+  margin-top: 0.5rem;
+}
+
+/* ==========================================================================
+   6 — Vision (horizontal journey)
+   ========================================================================== */
+.journey { margin-top: clamp(2rem, 5vw, 3rem); }
+.journey__rail {
+  position: relative; height: 3px; background: var(--brand-3);
+  border-radius: 999px; overflow: hidden; margin-bottom: 1.5rem;
+}
+.journey__rail i {
+  position: absolute; inset: 0; background: var(--signal);
+  transform-origin: 0 50%; transform: scaleX(1);
+}
+@supports (animation-timeline: view()) {
+  html.js .journey__rail i {
+    transform: scaleX(0);
+    animation: rail-x linear both;
+    animation-timeline: view();
+    animation-range: entry 15% cover 70%;
+  }
+}
+@supports not (animation-timeline: view()) {
+  html.js .journey__rail i { transform: scaleX(0); transition: transform 1000ms var(--ease); }
+  html.js .journey__rail.is-in i { transform: scaleX(1); }
+}
+
+/* Below 900px this is a deliberate horizontal track: the only horizontal
+   scroll on the page, user-driven, with snap points. */
+.journey__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(min(84%, 340px), 1fr);
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 0.75rem;
+  overscroll-behavior-x: contain;
+}
+.journey__track > * { scroll-snap-align: start; }
+@media (min-width: 900px) {
+  .journey__track {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+    gap: 1.25rem;
+  }
+}
+.stage {
+  border: 1px solid var(--brand-4);
+  border-radius: var(--r-panel);
+  background: var(--brand-1);
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.stage__k {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--signal);
+}
+.stage__k::before { content: ""; width: 8px; height: 8px; border-radius: 999px; background: var(--signal); }
+.stage--next .stage__k { color: var(--blue-grey); }
+.stage--next .stage__k::before { background: var(--steel); }
+.stage--far .stage__k { color: var(--blue-grey); }
+.stage--far .stage__k::before { background: transparent; box-shadow: inset 0 0 0 2px var(--steel); }
+.stage h3 { font-size: 1.25rem; }
+.stage p { color: var(--brand-soft); font-size: 0.9375rem; }
+.track-hint { font-size: 0.8125rem; color: var(--blue-grey); margin-top: 0.5rem; }
+@media (min-width: 900px) { .track-hint { display: none; } }
+
+/* ==========================================================================
+   7 — Why us
+   ========================================================================== */
+.why-grid { display: grid; gap: clamp(2rem, 5vw, 3rem); margin-top: clamp(2rem, 4vw, 3rem); }
+@media (min-width: 960px) { .why-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+
+.founders { display: grid; gap: 1rem; }
+@media (min-width: 560px) { .founders { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 960px) { .why-grid .founders { grid-template-columns: minmax(0, 1fr); } }
+.founder {
+  border: 1px solid var(--brand-4);
+  border-radius: var(--r-panel);
+  background: var(--brand-1);
+  padding: 1.25rem;
+}
+.founder img {
+  width: 56px; height: 56px; border-radius: 999px; object-fit: cover;
+  border: 1px solid var(--brand-4);
+}
+.founder__name { margin-top: 0.75rem; font-weight: 700; color: var(--white); }
+.founder__role {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--blue-grey); margin-top: 0.15rem;
+}
+.founder p { margin-top: 0.6rem; font-size: 0.9375rem; color: var(--brand-soft); }
+
+.quotes { display: grid; gap: 1rem; }
+.quote {
+  border-left: 3px solid var(--steel);
+  padding-left: 1.1rem;
+}
+.quote blockquote {
+  font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
+  line-height: 1.45;
+  color: var(--white);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.quote cite {
+  display: block; margin-top: 0.5rem; font-style: normal;
+  font-size: 0.8125rem; color: var(--blue-grey);
+}
+.counter {
+  display: flex; align-items: baseline; gap: 0.75rem;
+  border-top: 1px solid var(--brand-3); margin-top: 1.75rem; padding-top: 1.25rem;
+}
+.counter b {
+  font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: var(--signal);
+  letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums;
+}
+.counter span { color: var(--white); font-weight: 600; }
+
+/* ==========================================================================
+   8 — Scale
+   ========================================================================== */
+.scale { display: grid; gap: 1px; background: var(--brand-3); border: 1px solid var(--brand-3);
+  border-radius: var(--r-panel); overflow: hidden; margin-top: clamp(2rem, 5vw, 3rem); }
+.tier { background: var(--brand); padding: clamp(1.25rem, 3vw, 1.75rem); display: grid; gap: 0.4rem; }
+.tier p { color: var(--brand-soft); font-size: 0.9375rem; }
+.tier .tier__n {
+  font-size: clamp(2.25rem, 5.5vw, 3.5rem); font-weight: 800; color: var(--white);
+  letter-spacing: -0.035em; line-height: 1;
+}
+.tier--start { background: var(--brand-1); }
+.tier--start .tier__n { color: var(--signal); }
+.tier .tier__k {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--blue-grey);
+}
+.tier__bar { height: 6px; border-radius: 999px; background: var(--brand-4); margin-top: 0.35rem; }
+.tier__bar i { display: block; height: 100%; border-radius: 999px; background: var(--steel); }
+.tier--start .tier__bar i { background: var(--signal); }
+
+/* ==========================================================================
+   9 — CTA, forms, footer
+   ========================================================================== */
+.cta { text-align: left; }
+.cta__grid { display: grid; gap: clamp(2.5rem, 6vw, 4rem); align-items: start; }
+@media (min-width: 1000px) {
+  .cta__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+    column-gap: clamp(2.5rem, 5vw, 4rem);
+  }
+  .cta .form { max-width: none; }
+  .cta .guide { margin-top: 0; }
+}
+.form {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1.75rem;
+  max-width: 560px;
+}
+.field { display: grid; gap: 0.35rem; }
+.field label { font-size: 0.8125rem; font-weight: 700; color: var(--white); }
+.section--light .field label { color: var(--brand); }
+.field input, .field textarea {
+  background: var(--brand-1);
+  border: 1px solid var(--brand-4);
+  border-radius: var(--r-control);
+  padding: 0.7rem 0.8rem;
+  color: var(--white);
+  font-size: 1rem;
+  min-height: 44px;
+  width: 100%;
+}
+.field textarea { min-height: 96px; resize: vertical; }
+.field input::placeholder, .field textarea::placeholder { color: var(--blue-grey); }
+.field input:hover, .field textarea:hover { border-color: var(--steel); }
+.form__row { display: grid; gap: 0.9rem; }
+@media (min-width: 620px) { .form__row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.form__note { font-size: 0.8125rem; color: var(--blue-grey); }
+
+.guide {
+  border: 1px solid var(--brand-4);
+  border-radius: var(--r-panel);
+  background: var(--brand-1);
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+}
+.guide h3 { font-size: 1.125rem; }
+.guide p { margin-top: 0.4rem; font-size: 0.9375rem; color: var(--brand-soft); }
+.guide .form { margin-top: 1.1rem; max-width: none; }
+.guide-done { display: none; }
+.guide-done[data-done="1"] { display: block; }
+
+.site-footer {
+  border-top: 1px solid var(--brand-3);
+  padding-block: 2.5rem;
+  font-size: 0.875rem;
+  color: var(--blue-grey);
+}
+.site-footer__inner { display: grid; gap: 1.25rem; }
+@media (min-width: 760px) {
+  .site-footer__inner { grid-template-columns: 1fr auto; align-items: center; }
+}
+.site-footer a { color: var(--white); text-decoration: underline; text-underline-offset: 3px; }
+.site-footer nav { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+.site-footer nav a { text-decoration: none; color: var(--brand-soft); }
+.site-footer nav a:hover { color: var(--white); }
+
+/* ==========================================================================
+   about.html
+   ========================================================================== */
+.page-hero { padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2rem, 4vw, 3rem); }
+.prose { max-width: 68ch; display: grid; gap: 1.1rem; margin-top: clamp(1.5rem, 4vw, 2.25rem); }
+.prose p { font-size: 1.0625rem; line-height: 1.7; }
+.prose strong { color: var(--white); font-weight: 700; }
+.team { display: grid; gap: 1.25rem; margin-top: clamp(2rem, 5vw, 3rem); }
+@media (min-width: 760px) { .team { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.team .founder img { width: 72px; height: 72px; }
+.linkedin {
+  display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 1rem;
+  font-size: 0.875rem; font-weight: 700; color: var(--signal);
+  text-decoration: none; min-height: 44px;
+}
+.linkedin:hover { color: var(--white); }
+.linkedin svg { width: 16px; height: 16px; }
+
+/* ==========================================================================
+   Reduced motion — everything collapses to opacity or nothing. Last word.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    animation-timeline: auto !important;
+  }
+  html.js .reveal { opacity: 1 !important; transform: none !important; }
+  html.js .converge path { stroke-dashoffset: 0 !important; }
+  html.js .flow-rail__fill,
+  html.js .journey__rail i { transform: scaleX(1) !important; }
+  .scroll-rail { display: none; }
+}
