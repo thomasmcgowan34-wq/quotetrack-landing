@@ -165,6 +165,8 @@ if ('IntersectionObserver' in window &&
 
       <div class="duel__stage">
 
+        <div class="duel__sweep" aria-hidden="true"></div>
+
         <figure class="duel__panel duel__panel--asis" data-panel="asis">
           <p class="duel__panel-k">Today</p>
           <ul class="duel__channels" aria-hidden="true">
@@ -186,6 +188,7 @@ if ('IntersectionObserver' in window &&
             <div class="duel__node duel__node--out">
               <span class="duel__node-k">The result</span>
               <span class="pill pill--cold">Gone cold</span>
+              <span class="duel__node-sub">Nobody notices.</span>
             </div>
           </div>
           <figcaption class="duel__caption">So the quote goes cold, and the rep becomes an order-taker.</figcaption>
@@ -212,6 +215,7 @@ if ('IntersectionObserver' in window &&
             <div class="duel__node duel__node--out">
               <span class="duel__node-k">The result</span>
               <span class="pill pill--won">Won</span>
+              <span class="duel__node-sub">The sale lands.</span>
             </div>
           </div>
           <figcaption class="duel__caption">Chase and convert. Then the job is won.</figcaption>
@@ -621,28 +625,37 @@ if ('IntersectionObserver' in window &&
       var inView = false;
       var hovering = false;
 
-      function apply(s) {
+      function apply(s, sweep) {
         active = s;
         duel.classList.toggle('is-super', s === 'super');
         tabs.forEach(function (t) {
           t.setAttribute('aria-pressed', String(t.getAttribute('data-tab') === s));
         });
+        if (sweep) {
+          duel.classList.remove('is-sweeping');
+          void duel.offsetWidth; /* restart the animation */
+          duel.classList.add('is-sweeping');
+        }
       }
       function clearTimer() { if (timer) { clearTimeout(timer); timer = null; } }
       function schedule() {
         clearTimer();
         if (!inView || hovering) return;
         timer = setTimeout(function () {
-          apply(active === 'asis' ? 'super' : 'asis');
+          apply(active === 'asis' ? 'super' : 'asis', true);
           schedule();
         }, active === 'asis' ? 3400 : 4400);
       }
 
       tabs.forEach(function (t) {
         t.addEventListener('click', function () {
-          apply(t.getAttribute('data-tab'));
+          apply(t.getAttribute('data-tab'), true);
           schedule();
         });
+      });
+
+      duel.addEventListener('animationend', function (e) {
+        if (e.animationName === 'duel-sweep') duel.classList.remove('is-sweeping');
       });
 
       duel.addEventListener('mouseenter', function () { hovering = true; clearTimer(); });

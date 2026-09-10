@@ -47,6 +47,14 @@ was mined for copy and for a couple of structural ideas, not adopted wholesale.
 - **Reduced motion / no JS** (`html.js` is not added either way): the two panels
   sit side by side (stacked under 760px) as a plain labelled comparison, and the
   tabs are hidden. Verified: the page reads complete, the loop simply never runs.
+- The engine → ERP → result row lays out horizontally only when **the panel** is
+  wide enough — a **container query** (`container-type: inline-size` on
+  `.duel__panel`), not a viewport one. A viewport query crams three nodes into the
+  side-by-side fallback, where each panel is only ~half as wide; measured
+  2026-09-10: 1120px panel → 5 columns, 548px panel → one column.
+- A thin green **sweep** crosses the stage on each flip, so the change reads as a
+  transformation rather than a cut. Decorative, `aria-hidden`, and it can never
+  run without `html.js` — so never under reduced motion.
 
 ### Confidentiality, checked against the deck
 

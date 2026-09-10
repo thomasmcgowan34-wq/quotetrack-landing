@@ -564,6 +564,7 @@ html.js .reveal-4 { transition-delay: 240ms; }
 .duel__stage {
   display: grid;
   gap: clamp(1rem, 2.5vw, 1.5rem);
+  position: relative;
 }
 @media (min-width: 760px) { .duel__stage { grid-template-columns: 1fr 1fr; } }
 
@@ -574,6 +575,10 @@ html.js .reveal-4 { transition-delay: 240ms; }
   padding: clamp(1.25rem, 3vw, 1.75rem);
   display: grid;
   gap: 1.25rem;
+  /* The row below queries THIS element's width, not the viewport's: in the
+     no-JS / reduced-motion view the two panels sit side by side and are each
+     only ~half as wide, so a viewport query would cram three nodes into it. */
+  container-type: inline-size;
 }
 
 .duel__panel-k {
@@ -600,13 +605,17 @@ html.js .reveal-4 { transition-delay: 240ms; }
 }
 
 .duel__row { display: grid; gap: 0.9rem; }
-@media (min-width: 820px) {
+@container (min-width: 760px) {
   .duel__row {
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
   }
 }
-.duel__arrow { width: 20px; height: 20px; color: var(--steel); justify-self: center; align-self: center; }
-@media (max-width: 819px) { .duel__arrow { transform: rotate(90deg); } }
+.duel__arrow {
+  width: 20px; height: 20px; color: var(--steel-2);
+  justify-self: center; align-self: center;
+  transform: rotate(90deg);
+}
+@container (min-width: 760px) { .duel__arrow { transform: none; } }
 
 .duel__node {
   border: 1px solid var(--brand-4);
@@ -680,6 +689,27 @@ html.js .duel__panel { transition: opacity 620ms var(--ease); }
 html.js .duel__panel--super { opacity: 0; pointer-events: none; }
 html.js .duel.is-super .duel__panel--asis { opacity: 0; pointer-events: none; }
 html.js .duel.is-super .duel__panel--super { opacity: 1; pointer-events: auto; }
+
+/* The sweep — a thin green scan that crosses the stage as the state flips, so
+   the change reads as a transformation rather than a cut. Decorative only, and
+   it can never run without html.js (so never under reduced motion). */
+.duel__sweep {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--signal), transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+html.js .duel.is-sweeping .duel__sweep { animation: duel-sweep 950ms var(--ease); }
+@keyframes duel-sweep {
+  0%   { opacity: 0; left: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { opacity: 0; left: calc(100% - 2px); }
+}
 
 @keyframes rail-x { to { transform: scaleX(1); } }
 
