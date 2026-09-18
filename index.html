@@ -43,7 +43,7 @@ if ('IntersectionObserver' in window &&
       <a href="#gap">The gap</a>
       <a href="#how">How it works</a>
       <a href="#product">Product</a>
-      <a href="#vision">Vision</a>
+      <a href="#who">Who it's for</a>
       <a href="about.html">About</a>
     </nav>
     <a class="btn btn--primary btn--sm" href="#demo">Request a demo</a>
@@ -60,16 +60,41 @@ if ('IntersectionObserver' in window &&
     <p class="hero__flag"><span class="dot" aria-hidden="true"></span>Live in production. Paying design partner.</p>
 
     <div class="hero__grid">
-      <h1 class="display">Putting sales reps back in the driving&nbsp;seat.</h1>
+      <div class="hero__col-a">
+        <h1 class="display kinetic"><span class="kw"><span>Putting</span></span> <span class="kw"><span>sales</span></span> <span class="kw"><span>reps</span></span> <span class="kw"><span>back</span></span> <span class="kw"><span>in</span></span> <span class="kw"><span>the</span></span> <span class="kw"><span>driving</span></span> <span class="kw"><span>seat.</span></span></h1>
 
-      <div class="hero__col-b">
         <p class="hero__sub">Built for the trade, by people from the trade.</p>
 
-        <p class="lead hero__anchor">Builders merchants, electrical, plumbing, civils and stone. QuoteTrack sits on top of the ERP you already run and turns every open quote into one ranked list of who to call today.</p>
+        <p class="lead hero__anchor">Builders merchants, electrical, plumbing, civils and stone. QuoteTrack sits on top of the ERP you already run, gets the quote out in minutes instead of an afternoon, and chases every one of them until there is an answer.</p>
 
         <div class="actions">
           <a class="btn btn--primary" href="#demo">Request a demo</a>
           <a class="btn btn--ghost" href="#guide">Get the follow-up guide</a>
+        </div>
+      </div>
+
+      <!-- Decorative: the same surfaces are presented properly, with text, in
+           §product. aria-hidden so the page is not read out twice. -->
+      <div class="hero__demo" aria-hidden="true">
+        <div class="panel-light ui hero-demo">
+          <span class="hero-demo__sweep"></span>
+          <div class="ui__bar">
+            <span class="ui__title">Today</span>
+            <span class="ui__meta">Ranked by value at risk</span>
+          </div>
+          <div class="q-card hero-demo__row hero-demo__row--done">
+            <div class="q-top"><span class="q-name">Customer A</span><span class="q-value">&euro;47,000</span></div>
+            <div class="q-meta"><span class="q-age q-age--hot">142 days</span><span class="q-done">Called &middot; back Thursday</span></div>
+          </div>
+          <div class="q-card hero-demo__row">
+            <div class="q-top"><span class="q-name">Customer B</span><span class="q-value">&euro;31,000</span></div>
+            <div class="q-meta"><span class="q-age q-age--hot">118 days</span><span>Precast hollowcore</span></div>
+          </div>
+          <div class="q-card hero-demo__row">
+            <div class="q-top"><span class="q-name">Customer C</span><span class="q-value">&euro;9,100</span></div>
+            <div class="q-meta"><span class="q-age">21 days</span><span>Drainage package</span></div>
+          </div>
+          <p class="hero-demo__foot">In the rep&rsquo;s inbox at 7am. No login, nothing to type up.</p>
         </div>
       </div>
     </div>
@@ -145,8 +170,8 @@ if ('IntersectionObserver' in window &&
       </div>
       <div class="reveal reveal-2">
         <h2 class="h2">Ask a branch what it loses this way. Nobody can answer.</h2>
-        <p class="lead" style="margin-top:1.25rem">Not because nobody cares. Because nothing counts it. The quotes that were never chased do not appear in a report, do not show up in a month-end pack, and never get argued about in a meeting.</p>
-        <p class="cost-note">A cost you cannot see is a cost you never fix. That is the whole problem, and it is the first thing QuoteTrack changes.</p>
+        <p class="lead" style="margin-top:1.25rem">Not because nobody cares &mdash; because nothing counts it. Quotes that were never chased do not appear in a report, or a month-end pack, and never get argued about in a meeting.</p>
+        <p class="cost-note">A cost you cannot see is a cost you never fix.</p>
       </div>
     </div>
   </div>
@@ -234,13 +259,47 @@ if ('IntersectionObserver' in window &&
 </section>
 
 <!-- ======================================================================
-     5 — Built and live
+     5 — Rollout (light band — breaks 8,000px of navy, and answers IT)
+     ====================================================================== -->
+<section class="section section--light" id="rollout">
+  <div class="container">
+    <p class="label">Getting started</p>
+    <h2 class="h2 reveal">Live in weeks, not quarters. No data entry, ever.</h2>
+    <p class="lead reveal reveal-2" style="margin-top:1rem">Nothing to migrate, nothing to re-key, and no change to how anyone quotes. The reps carry on exactly as they are.</p>
+
+    <ol class="steps reveal reveal-2">
+      <li class="step">
+        <span class="step__n">01</span>
+        <h3>Connect your ERP</h3>
+        <p>A read-only sync with the systems the trade actually runs. Your data stays where it is, and stays yours.</p>
+      </li>
+      <li class="step">
+        <span class="step__n">02</span>
+        <h3>Every quote gets tagged to a job</h3>
+        <p>One job across five branches and three verticals reads as one project, not five unrelated quotes.</p>
+      </li>
+      <li class="step">
+        <span class="step__n">03</span>
+        <h3>Follow-up runs itself</h3>
+        <p>Chases go out on schedule in the rep&rsquo;s name, without the rep writing them. Replies come straight back to the rep.</p>
+      </li>
+      <li class="step">
+        <span class="step__n">04</span>
+        <h3>One list lands each morning</h3>
+        <p>Who to call, what has gone quiet, what is slipping. Ranked by value, in the inbox before the first coffee.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ======================================================================
+     6 — Built and live
      ====================================================================== -->
 <section class="section" id="product">
   <div class="container">
     <p class="label">Built and live</p>
-    <h2 class="h2 reveal">Not a prototype. Reps open this every morning.</h2>
-    <p class="lead reveal reveal-2" style="margin-top:1rem">Built with South Coast Building Supplies on a paid technical pilot, and running in production since. Three things it does, every day, before the first coffee.</p>
+    <h2 class="h2 reveal">A quote used to take an afternoon. Now it takes minutes.</h2>
+    <p class="lead reveal reveal-2" style="margin-top:1rem">Built with South Coast Building Supplies on a paid technical pilot, and running in branches since. Not a prototype &mdash; reps open this every morning.</p>
 
     <div class="product-grid">
 
@@ -317,44 +376,57 @@ if ('IntersectionObserver' in window &&
 
     </div>
     <p class="ui__caption">Interface shown with placeholder customers and values. Real quote data never leaves your tenant.</p>
-  </div>
-</section>
 
-<!-- ======================================================================
-     6 — Vision
-     ====================================================================== -->
-<section class="section" id="vision">
-  <div class="container">
-    <p class="label">Where this goes</p>
-    <h2 class="h2 reveal">We earn the trust first. Then we drive the work.</h2>
-    <p class="lead reveal reveal-2" style="margin-top:1rem">Led by the customer, in that order. Each step only makes sense once the one before it is being used every day.</p>
-
-    <div class="journey">
-      <div class="journey__rail" aria-hidden="true"><i></i></div>
-      <div class="journey__track" tabindex="0" role="group" aria-label="Platform roadmap — three stages">
-        <article class="stage">
-          <p class="stage__k">Shipping</p>
-          <h3>Quote staging &amp; follow-up</h3>
-          <p>Every open quote becomes a ranked daily action. Nothing relies on memory, and nothing relies on a rep logging into anything from the road.</p>
-        </article>
-        <article class="stage stage--next">
-          <p class="stage__k">In build</p>
-          <h3>The agentic layer</h3>
-          <p>An agent surfaces the opportunity the rep would not have seen, and guides the margin on the price before it goes out — not after the job is lost.</p>
-        </article>
-        <article class="stage stage--far">
-          <p class="stage__k">Where it goes</p>
-          <h3>The project intelligence layer</h3>
-          <p>What we won on every project, at what margin, and what to price next time. One job, five branches, three verticals — no ERP or CRM is built to read that.</p>
-        </article>
-      </div>
-      <p class="track-hint">Swipe to see all three →</p>
+    <div class="whatsnext reveal">
+      <p class="whatsnext__k">What comes next, led by the customer</p>
+      <ul class="whatsnext__list">
+        <li><b>Shipping</b><span>Quote capture, staging and follow-up. Nothing relies on memory.</span></li>
+        <li><b>In build</b><span>An agent that surfaces the opportunity and guides the margin before the price goes out.</span></li>
+        <li><b>Where it goes</b><span>What you won on every project, at what margin, and what to price next time.</span></li>
+      </ul>
     </div>
   </div>
 </section>
 
 <!-- ======================================================================
-     7 — Why us
+     8 — Who it's for (light band)
+     ====================================================================== -->
+<section class="section section--light" id="who">
+  <div class="container">
+    <p class="label">Who it&rsquo;s for</p>
+    <h2 class="h2 reveal">Built for trade suppliers.</h2>
+    <p class="lead reveal reveal-2" style="margin-top:1rem">If you quote out of an ERP and chase from memory, this is for you.</p>
+
+    <ul class="verticals reveal reveal-2">
+      <li><b>Builders merchants</b><span>Timber, blocks, bagged goods and the trade counter.</span></li>
+      <li><b>Electrical wholesale</b><span>Cable, containment, lighting and switchgear.</span></li>
+      <li><b>Plumbing and heating</b><span>Boilers, pipe, bathrooms and renewables.</span></li>
+      <li><b>Civils and groundworks</b><span>Drainage, ducting and the heavy side.</span></li>
+      <li><b>Timber and sheet materials</b><span>Sawn, engineered, sheet and mouldings.</span></li>
+      <li><b>Stone and hard landscaping</b><span>Paving, walling, natural and manufactured.</span></li>
+    </ul>
+
+    <p class="verticals__turn reveal">Six different businesses. The same three people, with the same problem.</p>
+
+    <div class="roles reveal">
+      <article class="role">
+        <h3>Sales reps</h3>
+        <p>One list, in your inbox, before you get in the van. Nothing to log into, and nothing to type up after.</p>
+      </article>
+      <article class="role">
+        <h3>Branch managers</h3>
+        <p>What your branch has out, what has gone quiet, and what actually got chased &mdash; without having to ask anyone.</p>
+      </article>
+      <article class="role">
+        <h3>Sales directors</h3>
+        <p>The same picture across every branch, on the same definitions, for the first time.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================================
+     9 — Why us
      ====================================================================== -->
 <section class="section" id="why">
   <div class="container">
@@ -374,72 +446,24 @@ if ('IntersectionObserver' in window &&
       </div>
     </div>
 
-    <div class="why-grid">
-      <div class="founders reveal">
-        <div class="founder">
-          <img src="assets/thomas-mcgowan.png" alt="" width="56" height="56" loading="lazy">
-          <p class="founder__name">Thomas McGowan</p>
-          <p class="founder__role">Co-founder &amp; CEO</p>
-          <p>Grew up in the family hardware trade, then learned go-to-market at Gong. An innate feel for how these businesses think, price and operate — and for what a branch will actually adopt.</p>
-        </div>
-        <div class="founder">
-          <img src="assets/henry-cullen.png" alt="" width="56" height="56" loading="lazy">
-          <p class="founder__name">Henry Cullen</p>
-          <p class="founder__role">Co-founder &amp; CTO</p>
-          <p>Ex-Apple, ex-Susquehanna International Group, where he built the internal tools finance and trading teams ran on. From building for trading desks to building for the trade counter.</p>
-        </div>
-        <p class="small"><a href="about.html" style="color:var(--signal)">Read the longer story →</a></p>
-      </div>
-
-      <div class="reveal reveal-2">
-        <div class="quotes">
-          <figure class="quote">
-            <blockquote>“We have been looking around the market for the last two years — and what we found is that the CRM-first systems are overkill, and the other bits are finance tools more so than sales rep enablers. There is a gap.”</blockquote>
-            <cite>Sales Director · builders merchant, Ireland</cite>
-          </figure>
-          <figure class="quote">
-            <blockquote>“I have never seen so much data and so little insight from our systems.”</blockquote>
-            <cite>Commercial Director · builders merchant, UK</cite>
-          </figure>
-          <figure class="quote">
-            <blockquote>“We’re trying to reduce the time it takes to build a quote from two hours down to a couple of minutes.”</blockquote>
-            <cite>Head of Sales · national electrical distributor</cite>
-          </figure>
-        </div>
-        <p class="counter"><b class="num"><span data-count-to="40">40</span>+</b> <span>discovery calls across Ireland and the UK before we wrote a line of product code.</span></p>
-      </div>
+    <div class="quotes quotes--row reveal">
+      <figure class="quote">
+        <blockquote>&ldquo;We have been looking around the market for the last two years &mdash; and what we found is that the CRM-first systems are overkill, and the other bits are finance tools more so than sales rep enablers. There is a gap.&rdquo;</blockquote>
+        <cite>Sales Director &middot; builders merchant, Ireland</cite>
+      </figure>
+      <figure class="quote">
+        <blockquote>&ldquo;I have never seen so much data and so little insight from our systems.&rdquo;</blockquote>
+        <cite>Commercial Director &middot; builders merchant, UK</cite>
+      </figure>
+      <figure class="quote">
+        <blockquote>&ldquo;We&rsquo;re trying to reduce the time it takes to build a quote from two hours down to a couple of minutes.&rdquo;</blockquote>
+        <cite>Head of Sales &middot; national electrical distributor</cite>
+      </figure>
     </div>
-  </div>
-</section>
 
-<!-- ======================================================================
-     8 — Scale
-     ====================================================================== -->
-<section class="section" id="scale">
-  <div class="container">
-    <p class="label">The shape of it</p>
-    <h2 class="h2 reveal">180,000 trade counters. All of them run this way.</h2>
-    <p class="lead reveal reveal-2" style="margin-top:1rem">This is not a niche that needs educating. It is an entire industry doing the same thing by hand, in the same order, every morning.</p>
-
-    <div class="scale reveal">
-      <div class="tier">
-        <p class="tier__k">Worldwide</p>
-        <p class="tier__n">180,000</p>
-        <p>construction supply outlets</p>
-        <div class="tier__bar" aria-hidden="true"><i style="width:100%"></i></div>
-      </div>
-      <div class="tier">
-        <p class="tier__k">Serviceable</p>
-        <p class="tier__n">65,000</p>
-        <p>multi-branch groups running a real ERP</p>
-        <div class="tier__bar" aria-hidden="true"><i style="width:36%"></i></div>
-      </div>
-      <div class="tier tier--start">
-        <p class="tier__k">Where we start</p>
-        <p class="tier__n">16,000</p>
-        <p>branches across Ireland and the UK</p>
-        <div class="tier__bar" aria-hidden="true"><i style="width:9%"></i></div>
-      </div>
+    <div class="why-foot reveal">
+      <p class="counter"><b class="num"><span data-count-to="40">40</span>+</b> <span>discovery calls across Ireland and the UK before we wrote a line of product code.</span></p>
+      <a class="btn btn--ghost btn--sm" href="about.html">Meet the founders</a>
     </div>
   </div>
 </section>
@@ -530,7 +554,7 @@ if ('IntersectionObserver' in window &&
       <a href="#gap">The gap</a>
       <a href="#how">How it works</a>
       <a href="#product">Product</a>
-      <a href="#vision">Vision</a>
+      <a href="#who">Who it's for</a>
       <a href="about.html">About</a>
       <a href="https://app.quotetrack.io">Sign in</a>
     </nav>

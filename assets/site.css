@@ -1067,3 +1067,208 @@ html.js .duel.is-sweeping .duel__sweep { animation: duel-sweep 950ms var(--ease)
      two panels already sit side by side and the controls are hidden. */
   .scroll-rail { display: none; }
 }
+
+/* ==========================================================================
+   Second pass, 2026-09-18 — hero demo, kinetic type, rollout, who it is for
+   ========================================================================== */
+
+/* ---------- Hero: two columns, type left, live surface right ---------- */
+@media (min-width: 1040px) {
+  .hero__grid {
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+    align-items: center;
+    column-gap: clamp(2rem, 5vw, 4rem);
+  }
+}
+.hero__col-a .hero__sub { margin-top: clamp(1.25rem, 2.5vw, 1.75rem); }
+
+/* Kinetic headline: each word rides up out of its own clipped box.
+   Only under html.js — with JS off or motion reduced the words simply sit. */
+.kinetic .kw { display: inline-block; }
+.kinetic .kw > span { display: inline-block; }
+html.js .kinetic .kw { overflow: hidden; padding-bottom: 0.06em; vertical-align: bottom; }
+html.js .kinetic .kw > span {
+  transform: translateY(105%);
+  animation: kw-rise 620ms var(--ease) forwards;
+}
+@keyframes kw-rise { to { transform: translateY(0); } }
+html.js .kinetic .kw:nth-child(1) > span { animation-delay: 60ms; }
+html.js .kinetic .kw:nth-child(2) > span { animation-delay: 115ms; }
+html.js .kinetic .kw:nth-child(3) > span { animation-delay: 170ms; }
+html.js .kinetic .kw:nth-child(4) > span { animation-delay: 225ms; }
+html.js .kinetic .kw:nth-child(5) > span { animation-delay: 280ms; }
+html.js .kinetic .kw:nth-child(6) > span { animation-delay: 335ms; }
+html.js .kinetic .kw:nth-child(7) > span { animation-delay: 390ms; }
+html.js .kinetic .kw:nth-child(8) > span { animation-delay: 445ms; }
+
+/* ---------- Hero demo: the product, above the fold ---------- */
+.hero__demo { margin-top: clamp(2rem, 4vw, 2.5rem); }
+@media (min-width: 1040px) { .hero__demo { margin-top: 0; } }
+.hero-demo { position: relative; overflow: hidden; }
+.hero-demo .q-card { transition: background-color var(--motion-base) var(--ease); }
+.hero-demo__row--done { background: var(--surface-subtle); }
+.q-done { color: var(--signal-deep); font-weight: 700; }
+.hero-demo__foot {
+  font-size: 0.75rem;
+  color: var(--steel-2);
+  padding: 0.5rem 0.125rem 0;
+  border-top: 1px solid var(--surface-subtle);
+  margin-top: 0.15rem;
+}
+/* Rows assemble once, top to bottom. Never loops — something moving forever in
+   the corner of the eye makes a page harder to read, not more alive. */
+html.js .hero-demo__row { animation: row-in 560ms var(--ease) backwards; }
+html.js .hero-demo__row:nth-of-type(1) { animation-delay: 380ms; }
+html.js .hero-demo__row:nth-of-type(2) { animation-delay: 500ms; }
+html.js .hero-demo__row:nth-of-type(3) { animation-delay: 620ms; }
+@keyframes row-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+/* One green pass across the card as it finishes assembling. Decorative. */
+.hero-demo__sweep { display: none; }
+html.js .hero-demo__sweep {
+  display: block;
+  position: absolute;
+  inset-block: 0;
+  width: 38%;
+  left: -40%;
+  background-image: linear-gradient(90deg,
+    rgba(57, 223, 121, 0) 0%,
+    rgba(57, 223, 121, 0.16) 50%,
+    rgba(57, 223, 121, 0) 100%);
+  pointer-events: none;
+  animation: sweep 1500ms var(--ease) 820ms 1 both;
+}
+@keyframes sweep { from { left: -40%; } to { left: 108%; } }
+
+/* ---------- Rollout: four numbered steps on the light band ---------- */
+.steps {
+  list-style: none;
+  display: grid;
+  gap: 1px;
+  background: var(--blue-grey-light);
+  border: 1px solid var(--blue-grey-light);
+  border-radius: var(--r-panel);
+  overflow: hidden;
+  margin-top: clamp(2rem, 5vw, 3rem);
+}
+@media (min-width: 720px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1040px) { .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.step {
+  background: var(--surface-subtle);
+  padding: clamp(1.25rem, 2.5vw, 1.6rem);
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+  transition: background-color var(--motion-fast) var(--ease);
+}
+.step:hover { background: var(--white); }
+.step__n {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--signal-deep);
+}
+.step h3 { font-size: 1.0625rem; }
+.step p { color: var(--steel-2); font-size: 0.9375rem; }
+
+/* ---------- What comes next: the roadmap, demoted to a strip ---------- */
+.whatsnext {
+  margin-top: clamp(2rem, 5vw, 3rem);
+  border-top: 1px solid var(--brand-3);
+  padding-top: 1.5rem;
+}
+.whatsnext__k {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--blue-grey); margin-bottom: 1rem;
+}
+.whatsnext__list { list-style: none; display: grid; gap: 1rem; }
+@media (min-width: 860px) { .whatsnext__list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; } }
+.whatsnext__list li { display: grid; gap: 0.3rem; border-left: 2px solid var(--brand-4); padding-left: 0.9rem; }
+.whatsnext__list li:first-child { border-left-color: var(--signal); }
+.whatsnext__list b { color: var(--white); font-size: 0.9375rem; }
+.whatsnext__list span { color: var(--brand-soft); font-size: 0.9375rem; }
+
+/* ---------- Who it is for ---------- */
+.verticals {
+  list-style: none;
+  display: grid;
+  gap: 1px;
+  background: var(--blue-grey-light);
+  border: 1px solid var(--blue-grey-light);
+  border-radius: var(--r-panel);
+  overflow: hidden;
+  margin-top: clamp(2rem, 5vw, 3rem);
+}
+@media (min-width: 640px) { .verticals { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .verticals { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.verticals li {
+  background: var(--surface-subtle);
+  padding: 1.1rem 1.25rem;
+  display: grid;
+  gap: 0.25rem;
+  transition: background-color var(--motion-fast) var(--ease);
+}
+.verticals li:hover { background: var(--white); }
+.verticals b { color: var(--brand); font-size: 0.9375rem; }
+.verticals span { color: var(--steel-2); font-size: 0.875rem; }
+.verticals__turn {
+  margin-top: 1.5rem;
+  font-size: clamp(1.0625rem, 2vw, 1.375rem);
+  font-weight: 700;
+  color: var(--brand);
+  letter-spacing: -0.015em;
+}
+.roles { display: grid; gap: 1rem; margin-top: 1.5rem; }
+@media (min-width: 820px) { .roles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.role {
+  background: var(--white);
+  border: 1px solid var(--blue-grey-light);
+  border-radius: var(--r-panel);
+  padding: clamp(1.1rem, 2.5vw, 1.5rem);
+  display: grid;
+  gap: 0.45rem;
+  align-content: start;
+  transition: transform var(--motion-fast) var(--ease),
+              border-color var(--motion-fast) var(--ease);
+}
+.role:hover { transform: translateY(-2px); border-color: var(--signal-deep); }
+.role h3 { font-size: 1.0625rem; }
+.role p { color: var(--steel-2); font-size: 0.9375rem; }
+
+/* ---------- Why us: quotes in a row, then the footer line ---------- */
+.quotes--row { margin-top: clamp(2rem, 5vw, 3rem); }
+@media (min-width: 900px) {
+  .quotes--row { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; align-items: start; }
+  .quotes--row .quote blockquote { font-size: 1.0625rem; }
+}
+.why-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  border-top: 1px solid var(--brand-3);
+  margin-top: clamp(2rem, 4vw, 2.5rem);
+  padding-top: 1.5rem;
+}
+.why-foot .counter { border: 0; margin: 0; padding: 0; }
+
+/* ---------- Card lift on the dark cards that were inert ---------- */
+.stat, .flow-step, .stage {
+  transition: transform var(--motion-fast) var(--ease),
+              border-color var(--motion-fast) var(--ease);
+}
+.stat:hover, .flow-step:hover, .stage:hover {
+  transform: translateY(-2px);
+  border-color: var(--steel);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .kinetic .kw > span { transform: none !important; animation: none !important; }
+  html.js .kinetic .kw { overflow: visible !important; }
+  html.js .hero-demo__row { animation: none !important; }
+  html.js .hero-demo__sweep { display: none !important; }
+  .stat:hover, .flow-step:hover, .stage:hover, .role:hover, .step:hover { transform: none !important; }
+}
