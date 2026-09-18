@@ -10,6 +10,82 @@ token value changes there, change it in `assets/site.css` here too.
 
 ---
 
+## Third pass — 2026-09-18 (take stock of all three versions; cut, then add)
+
+Three versions existed at this point and the first job was to compare them:
+
+| Version | State |
+|---|---|
+| **The live site** (`origin/main`) | Still the pre-refresh page: the rejected `#1a2e4a`/`#22c55e` pair, Inter and Inter Tight, and "pipeline" five times including in the `<title>`. 3,786px at 1280. |
+| **`origin/site-refresh`** (Thomas) | Already on the correct brand, Schibsted Grotesk + Syne, **zero banned words**, and materially sharper customer copy than this branch had. Static — no motion at all — light-heavy, Google Fonts over CDN, and modal-gated forms. 6,102px. |
+| **`main`** (this branch) | Dark-first, animated, correct — but 8,031px, unrelieved navy, and with an investor-flavoured tail a merchant has no use for. |
+
+The conclusion was that Thomas's branch was **better on substance** and this one
+was better on craft, so this pass cut the tail and adopted his substance.
+
+### Cut, deliberately
+
+- **The market-size section** (180,000 / 65,000 / 16,000). A merchant does not
+  buy because the market is big; it is investor framing on a customer page, and
+  it sat closest to the confidentiality line of anything here.
+- **The roadmap as a full section.** "In build" and "Where it goes" were
+  out-shouting the product that actually exists, and inviting *"so it does not
+  do that yet"*. Now a three-item strip underneath the real screens.
+- **The founder cards on `index`.** They are the whole point of `about.html`;
+  repeating them cost ~500px for no new information. Replaced by one
+  *Meet the founders* link.
+
+### Adopted from `site-refresh`
+
+- **"Live in weeks, not quarters. No data entry, ever."** — four rollout steps.
+  The page had no answer at all to *what does this cost me to put in?*, which is
+  the first question an IT manager asks.
+- **"Built for trade suppliers"** — six verticals and three roles. The page never
+  answered *is this me?*.
+- **Quote creation now leads the product section** ("a quote used to take an
+  afternoon, now it takes minutes"). It is half of what the product does and was
+  buried inside the turn.
+
+Both new sections are **light bands**, which also breaks up what had become an
+unrelieved run of navy from the hero to the footer.
+
+### Flair, and where it was spent
+
+- **The hero now carries the product.** A live "Today" list sits beside the
+  headline and assembles itself once — rows in, top row already actioned, one
+  green sweep across the card. It is `aria-hidden`, because §product presents the
+  same surfaces properly with text; this is the picture, not the content.
+- **Kinetic headline** — each word rides up out of its own clipped box, 55ms
+  apart. ⚠ The clip box is the **line box, not the glyph box**, so the first
+  attempt sheared the descenders off "Putting" and "driving". Fixed with
+  `padding-bottom: 0.2em` and a matching negative margin, so the rhythm is
+  unchanged. 0.06em was not enough at 80px.
+- **Hover lift** on the stat, flow, stage, role and step cards; step and vertical
+  rows warm from `surface-subtle` to white.
+- All of it is gated behind `html.js` and collapsed by `prefers-reduced-motion`.
+  Nothing loops forever — something moving permanently in the corner of the eye
+  makes a page harder to read, not more alive.
+
+### 🔴 The focus-ring rule caught a live regression
+
+The turn's active tab is a **green-filled control**, so it reproduced the exact
+defect §3 below documents: the green ring measured **1.00:1 against the button's
+own green fill**. `.duel__tab[aria-pressed="true"]` now takes `signal-deep` with
+everything else brand-filled. This is the second time this class of control has
+appeared and the second time it shipped wrong first — the rule is right, and it
+needs to be applied whenever a control's fill is one of the brand pair.
+
+### Measured after this pass
+
+14 painted colours, all from the token set · **0 contrast failures** across both
+pages at 375/768/1280 · 0 box-shadows · 0 radii over 12px that are not pills ·
+0 text below 12px · every faded element sits at exactly 0, never partially ·
+**axe-core 0 violations** on both pages at both widths · Lighthouse **100/100/
+100/100 desktop, 99/100/100/100 mobile**. CLS moved 0 → 0.023 with the hero
+animation, comfortably inside the 0.1 "good" band.
+
+---
+
 ## Second pass — 2026-09-10 (the turn, and a tighter problem story)
 
 Henry asked for two things on top of the first build: (1) a big focus on the
