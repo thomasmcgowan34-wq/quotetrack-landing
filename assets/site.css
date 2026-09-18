@@ -145,6 +145,7 @@ p { text-wrap: pretty; }
    grounds, and no third ring colour is introduced. */
 .btn--primary,
 .skip-link,
+.duel__tab[aria-pressed="true"],
 .section--light .btn--primary { --focus-ring: var(--signal-deep); }
 
 .skip-link {
@@ -940,7 +941,9 @@ html.js .duel.is-sweeping .duel__sweep { animation: duel-sweep 950ms var(--ease)
 }
 .rd-text { font-size: 1.125rem; font-weight: 700; color: var(--white); letter-spacing: -0.015em; }
 .rd-item--us .rd-text { color: var(--signal); }
-.rd-arrow { align-self: center; color: var(--steel); font-size: 1.5rem; line-height: 1; }
+/* --steel measured 1.98:1 on the panel — below the 3:1 non-text floor even
+   for a decorative glyph. --blue-grey is 6.21:1 on the same ground. */
+.rd-arrow { align-self: center; color: var(--blue-grey); font-size: 1.5rem; line-height: 1; }
 @media (max-width: 640px) {
   .records-drives { flex-direction: column; }
   .rd-arrow { transform: rotate(90deg); align-self: flex-start; }
@@ -1086,7 +1089,16 @@ html.js .duel.is-sweeping .duel__sweep { animation: duel-sweep 950ms var(--ease)
    Only under html.js — with JS off or motion reduced the words simply sit. */
 .kinetic .kw { display: inline-block; }
 .kinetic .kw > span { display: inline-block; }
-html.js .kinetic .kw { overflow: hidden; padding-bottom: 0.06em; vertical-align: bottom; }
+/* The clip box is the line box, which is shorter than the glyph box, so a
+   descender ("Putting", "driving") clips. Pad the box below the baseline and
+   pull the same amount back off the bottom margin so the line rhythm is
+   unchanged — measured at 80px: 0.06em was not enough, 0.2em is. */
+html.js .kinetic .kw {
+  overflow: hidden;
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
+  vertical-align: bottom;
+}
 html.js .kinetic .kw > span {
   transform: translateY(105%);
   animation: kw-rise 620ms var(--ease) forwards;
