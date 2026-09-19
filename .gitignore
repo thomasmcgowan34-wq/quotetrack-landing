@@ -7,3 +7,6 @@ REBUILD-BRIEF.md
 .DS_Store
 Thumbs.db
 *.swp
+
+# Local preview config, not site content
+.claude/
