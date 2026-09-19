@@ -138,8 +138,9 @@ A term sweep of the deck's prospect names (Murdocks, Chadwicks, Kellihers, Rexel
 CORE, HPC, IPC, Beesley & Fildes, MD O'Shea, Trade Electric Group), the named
 advisors, the €4.2m / €750k / price-ladder / ARR figures, and the named discovery
 quotes returned **nothing** in either page or the CSS. Traction is shown through
-the sanctioned signals only: *live in production with a paying design partner*,
-South Coast Building Supplies, the Ignite programme, and *40+ discovery calls*.
+the sanctioned signals only: *live in production*, South Coast Building Supplies (logo only), the Ignite
+programme, and *40+ discovery calls*. Commercial-arrangement language (paying, paid pilot, design
+partner) is banned from the site: that is pitch-deck material, not website copy.
 Thomas's five discovery quotes (adopted in spirit) are all role-attributed.
 
 ---
