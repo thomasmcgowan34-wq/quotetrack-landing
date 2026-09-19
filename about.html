@@ -1,433 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About – QuoteTrack</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --navy: #1a2e4a;
-            --navy-deep: #0e1c30;
-            --green: #22c55e;
-            --green-dark: #16a34a;
-            --gray-light: #f4f6f8;
-            --gray-medium: #e2e6ea;
-            --gray-dark: #5b6877;
-            --white: #ffffff;
-        }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            color: var(--navy);
-            background: var(--white);
-            line-height: 1.6;
-        }
-        h1, h2, h3, h4 { font-family: 'Inter Tight', 'Inter', sans-serif; }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About QuoteTrack — two sides of the same problem</title>
+<meta name="description" content="One founder grew up in the trade. One built the internal tools finance and trading teams ran on. QuoteTrack is what happens when those two things meet.">
+<meta name="theme-color" content="#08131f">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://www.quotetrack.io/about.html">
 
-        /* Header */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: var(--white);
-            border-bottom: 1px solid var(--gray-medium);
-            padding: 1rem 0;
-        }
-        .header-container {
-            max-width: 1140px;
-            margin: 0 auto;
-            padding: 0 2.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-family: 'Inter Tight', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            text-decoration: none;
-        }
-        .logo span:first-child { color: var(--navy); }
-        .logo span:last-child { color: var(--green); }
-        nav a {
-            margin-left: 2.5rem;
-            text-decoration: none;
-            color: var(--navy);
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: color 0.2s ease;
-        }
-        nav a:hover, nav a.active { color: var(--green); }
+<meta property="og:type" content="website">
+<meta property="og:title" content="About QuoteTrack — two sides of the same problem">
+<meta property="og:description" content="We are not consultants who found a market. One of us grew up inside these businesses.">
+<meta property="og:url" content="https://www.quotetrack.io/about.html">
+<meta property="og:image" content="https://www.quotetrack.io/assets/logo-dark-2x.png">
+<meta name="twitter:card" content="summary_large_image">
 
-        /* Hero */
-        .page-hero {
-            background: var(--navy-deep);
-            padding: 5rem 2.5rem 4.5rem;
-            position: relative;
-        }
-        .page-hero::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--green) 0%, transparent 60%);
-        }
-        .page-hero-inner {
-            max-width: 720px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        .eyebrow {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--green);
-            margin-bottom: 1rem;
-        }
-        .page-hero h1 {
-            font-weight: 800;
-            font-size: 2.75rem;
-            color: var(--white);
-            letter-spacing: -0.02em;
-            line-height: 1.1;
-            margin-bottom: 1.25rem;
-        }
-        .page-hero p {
-            font-size: 1.1rem;
-            color: rgba(255,255,255,0.65);
-            line-height: 1.7;
-            max-width: 520px;
-            margin: 0 auto;
-        }
-
-        /* Story */
-        .story {
-            max-width: 680px;
-            margin: 0 auto;
-            padding: 3.5rem 2.5rem 4.5rem;
-        }
-        .story p {
-            font-size: 1.05rem;
-            line-height: 1.85;
-            color: var(--gray-dark);
-            margin-bottom: 1.6rem;
-        }
-        .story p:last-child { margin-bottom: 0; }
-        .story p strong { color: var(--navy); font-weight: 600; }
-
-        /* Quote Carousel */
-        .quote-block {
-            background: var(--navy-deep);
-            padding: 5rem 2.5rem;
-            position: relative;
-        }
-        .quote-block-inner {
-            max-width: 720px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        .quote-carousel {
-            position: relative;
-            min-height: 180px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .quote-slide {
-            position: absolute;
-            width: 100%;
-            opacity: 0;
-            transition: opacity 0.6s ease;
-            pointer-events: none;
-        }
-        .quote-slide.active {
-            opacity: 1;
-            pointer-events: auto;
-            position: relative;
-        }
-        .quote-block blockquote {
-            font-size: 1.15rem;
-            line-height: 1.8;
-            color: rgba(255,255,255,0.85);
-            font-style: italic;
-            margin-bottom: 1.5rem;
-        }
-        .quote-block cite {
-            font-size: 0.78rem;
-            font-weight: 700;
-            font-style: normal;
-            color: var(--green);
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-        }
-        .quote-dots {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-top: 2rem;
-        }
-        .quote-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.25);
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            transition: background 0.3s ease;
-        }
-        .quote-dot.active {
-            background: var(--green);
-        }
-        @media (max-width: 480px) {
-            .quote-carousel { min-height: 220px; }
-            .quote-block blockquote { font-size: 1rem; }
-        }
-
-        /* Team */
-        .team {
-            max-width: 1140px;
-            margin: 0 auto;
-            padding: 5.5rem 2.5rem;
-        }
-        .team .eyebrow { color: var(--green-dark); margin-bottom: 0.75rem; }
-        .team h2 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--navy);
-            letter-spacing: -0.01em;
-            margin-bottom: 3rem;
-        }
-        .team-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-        .team-card {
-            padding: 2.5rem;
-            border: 1px solid var(--gray-medium);
-            border-radius: 10px;
-        }
-        .team-card-top {
-            display: flex;
-            align-items: center;
-            gap: 1.25rem;
-            margin-bottom: 1.5rem;
-        }
-        .team-avatar {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-        .team-name {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 0.2rem;
-        }
-        .team-role {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--green-dark);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .team-card a.linkedin {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            margin-top: 1rem;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--gray-dark);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-        .team-card a.linkedin:hover { color: var(--navy); }
-        .team-card a.linkedin svg { flex-shrink: 0; }
-
-        /* Footer CTA */
-        .footer-cta {
-            background: var(--navy-deep);
-            color: var(--white);
-            padding: 4.5rem 2.5rem;
-            text-align: center;
-        }
-        .footer-cta h2 {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            letter-spacing: -0.01em;
-        }
-        .footer-cta p {
-            font-size: 0.97rem;
-            color: rgba(255,255,255,0.65);
-            margin-bottom: 2rem;
-        }
-        .cta-primary {
-            display: inline-block;
-            background: var(--green);
-            color: var(--navy-deep);
-            padding: 0.85rem 2rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.95rem;
-            transition: background 0.2s ease;
-            border: none;
-            cursor: pointer;
-        }
-        .cta-primary:hover { background: var(--green-dark); }
-        .email-link { color: var(--green); text-decoration: none; }
-        .email-link:hover { text-decoration: underline; }
-
-        /* Footer */
-        footer {
-            background: var(--navy-deep);
-            color: rgba(255,255,255,0.4);
-            padding: 1.5rem 2.5rem;
-            text-align: center;
-            font-size: 0.82rem;
-            border-top: 1px solid rgba(255,255,255,0.07);
-        }
-        footer a { color: var(--green); text-decoration: none; }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .page-hero { padding: 3.5rem 1.5rem 3rem; }
-            .page-hero h1 { font-size: 2.1rem; }
-            .story { padding: 3.5rem 1.5rem; }
-            .quote-block { padding: 3.5rem 1.5rem; }
-            .team { padding: 3.5rem 1.5rem; }
-            .team-grid { grid-template-columns: 1fr; }
-            nav a { margin-left: 1.25rem; font-size: 0.82rem; }
-        }
-        @media (max-width: 480px) {
-            nav { display: none; }
-            .header-container { padding: 0 1.25rem; }
-            .page-hero h1 { font-size: 1.85rem; }
-        }
-    </style>
+<link rel="preload" href="assets/fonts/schibsted-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+<script>
+if ('IntersectionObserver' in window &&
+    !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+  document.documentElement.className += ' js';
+}
+</script>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-container">
-            <a href="index.html" class="logo">
-                <span>Quote</span><span>Track</span>
-            </a>
-            <nav>
-                <a href="index.html#problem">Problem</a>
-                <a href="index.html#product">How it works</a>
-                <a href="index.html#outcomes">Built for your team</a>
-                <a href="index.html#sneak-peek">Platform</a>
-                <a href="about.html" class="active">About</a>
-            </nav>
-        </div>
-    </header>
 
-    <!-- Hero -->
-    <section class="page-hero">
-        <div class="page-hero-inner">
-            <p class="eyebrow">About us</p>
-            <h1>Two sides of the same problem</h1>
-            <p>One founder grew up in the trade. One built tools for people who couldn't afford to get things wrong. QuoteTrack is what happens when those two things meet.</p>
-        </div>
-    </section>
+<a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- Team -->
-    <section class="team">
-        <p class="eyebrow">The team</p>
-        <h2>The people behind it</h2>
-        <div class="team-grid">
-            <div class="team-card">
-                <div class="team-card-top">
-                    <img src="assets/thomas-mcgowan.png" alt="Thomas McGowan" class="team-avatar">
-                    <div>
-                        <div class="team-name">Thomas McGowan</div>
-                        <div class="team-role">Co-Founder &amp; CEO</div>
-                    </div>
-                </div>
-                <p>Thomas grew up in the family hardware trade in Donegal before spending four years at Gong as Senior Account Executive, EMEA. He founded QuoteTrack to solve the problem he lived on both sides of: a trade industry full of opportunity, running without the tools to capture it.He brings an innate and unqiue understanding of the industry and the complexities of how it operates. </p>
-                <a href="https://www.linkedin.com/in/thomas-mcgowan-92a369172/" target="_blank" class="linkedin">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                    Connect on LinkedIn
-                </a>
-            </div>
-            <div class="team-card">
-                <div class="team-card-top">
-                    <img src="assets/henry-cullen.png" alt="Henry Cullen" class="team-avatar">
-                    <div>
-                        <div class="team-name">Henry Cullen</div>
-                        <div class="team-role">Co-Founder &amp; CTO</div>
-                    </div>
-                </div>
-                <p>Henry cut his teeth where the stakes are highest — re-engineering business processes at Apple and building software for the trading desks at SIG, where systems move real money and there's no room to get it wrong. Now he's gone from trading to the trade: building for the reps and merchants in an industry software forgot. A Dean's and Quercus scholar who topped his Business Information Systems class, he pairs high-stakes engineering with a rare feel for the people who use it.</p>
-                <a href="https://www.linkedin.com/in/henry-cullen-web/" target="_blank" class="linkedin">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                    Connect on LinkedIn
-                </a>
-            </div>
-        </div>
-    </section>
+<div class="scroll-rail" aria-hidden="true"><div class="scroll-rail__fill"></div></div>
 
-    <!-- Story -->
-    <div class="story">
-        <p class="eyebrow" style="color: var(--green-dark); margin-bottom: 0.75rem;">The story</p>
-        <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; margin-bottom: 2rem;">Two sides of the same problem</h2>
-        <p>Thomas grew up around builders merchants and trade distributors in Donegal. He watched reps buried in notebooks and spreadsheets just to track who to call, and branch managers with no real read on what was moving through their business until it was too late to act.</p>
-        <p>Years later, working in B2B sales tech at Gong, he saw what's possible when a team has the right system underneath them. <strong>The trade had been left in the dark.</strong> No one had built for them — not really. The CRM-first tools were overkill. Everything else was a finance system dressed up as a sales tool.</p>
-        <p>Henry left Susquehanna International Group, where he built internal tools for finance and trading operations, to go build for a different kind of trade. He'd spent years solving the same core problem at one of the world's most demanding environments: turning data that exists into action that happens.</p>
-        <p><strong>QuoteTrack is what they built together.</strong> Not a system of record. A system of action — sitting on top of the ERP, closing the gap between insight and actually doing something about it.</p>
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="wordmark" href="index.html" aria-label="QuoteTrack — home">
+      <img src="assets/logo-dark.svg" width="150" height="32" alt="QuoteTrack">
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html#gap">The gap</a>
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#product">Product</a>
+      <a href="index.html#who">Who it’s for</a>
+      <a href="about.html" aria-current="page">About</a>
+    </nav>
+    <a class="btn btn--primary btn--sm" href="index.html#demo">Request a demo</a>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="page-hero">
+  <div class="container">
+    <p class="label">About us</p>
+    <h1 class="display" style="max-width:14ch">Two sides of the same problem.</h1>
+    <p class="lead" style="margin-top:1.5rem">One of us grew up in the trade. One of us built the internal tools that finance and trading teams ran on, where getting it wrong was expensive. QuoteTrack is what happens when those two things meet.</p>
+  </div>
+</section>
+
+<section class="section" id="team">
+  <div class="container">
+    <p class="label">The team</p>
+    <h2 class="h2 reveal">The people behind it</h2>
+
+    <div class="team">
+      <article class="founder reveal">
+        <img src="assets/thomas-mcgowan.png" alt="Thomas McGowan" width="72" height="72">
+        <p class="founder__name">Thomas McGowan</p>
+        <p class="founder__role">Co-founder &amp; CEO</p>
+        <p>Thomas grew up in the family hardware trade in Donegal before spending four years at Gong as Senior Account Executive, EMEA. He founded QuoteTrack to solve the problem he had lived on both sides of: a trade full of opportunity, running without the tools to capture it. He brings a rare feel for how these businesses actually think, price and operate — and for what a branch will really adopt.</p>
+        <a class="linkedin" href="https://www.linkedin.com/in/thomas-mcgowan-92a369172/" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          Connect on LinkedIn
+        </a>
+      </article>
+
+      <article class="founder reveal reveal-2">
+        <img src="assets/henry-cullen.png" alt="Henry Cullen" width="72" height="72">
+        <p class="founder__name">Henry Cullen</p>
+        <p class="founder__role">Co-founder &amp; CTO</p>
+        <p>Henry cut his teeth where the stakes are highest — re-engineering business processes at Apple, then at Susquehanna International Group, building the internal software that finance, operations and trading teams depended on every day. He has gone from building for trading desks to building for the trade counter. A Dean’s and Quercus scholar who topped his Business Information Systems class, he pairs demanding engineering with a rare feel for the people who have to use it.</p>
+        <a class="linkedin" href="https://www.linkedin.com/in/henry-cullen-web/" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          Connect on LinkedIn
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="story">
+  <div class="container">
+    <p class="label">The story</p>
+    <h2 class="h2 reveal">We started by listening, not pitching.</h2>
+
+    <div class="prose reveal reveal-2">
+      <p>Thomas grew up around builders merchants and trade distributors in Donegal. He watched reps buried in notebooks and spreadsheets just to keep track of who to call, and branch managers with no real read on what was moving through their business until it was too late to do anything about it.</p>
+      <p>Years later, working in B2B sales tech at Gong, he saw what is possible when a team has the right system underneath it. <strong>The trade had been left in the dark.</strong> Nobody had built for it — not really. The CRM-first tools were overkill. Everything else was a finance system dressed up as a sales tool.</p>
+      <p>Henry left Susquehanna International Group, where he built internal software for finance and trading operations, to go and build for a different kind of trade. He had spent years on the same core problem in one of the most demanding environments there is: turning data that already exists into action that actually happens.</p>
+      <p>So we did the unglamorous thing first. Forty-plus discovery calls across Ireland and the UK, on-site visits, and a lot of sitting beside people asking about their day rather than pitching an idea. Sales directors, reps, IT directors. The same story in every branch we walked into.</p>
+      <p><strong>QuoteTrack is what we built from it.</strong> Not a system of record — a system for action. It sits on top of the ERP you already run and closes the gap between insight and actually doing something about it.</p>
     </div>
 
-    <!-- Quote -->
-    <div class="quote-block">
-        <div class="quote-block-inner">
-            <blockquote>"We have been looking around the market for the last two years — and what we found is that the CRM-first systems are overkill, and the other bits are finance tools more so than sales rep enablers. There is a gap."</blockquote>
-            <cite>Sales Director · Irish Builders Merchants</cite>
-        </div>
+    <figure class="quote reveal" style="margin-top:clamp(2rem,5vw,3rem);max-width:62ch">
+      <blockquote>“We have been looking around the market for the last two years — and what we found is that the CRM-first systems are overkill, and the other bits are finance tools more so than sales rep enablers. There is a gap.”</blockquote>
+      <cite>Sales Director · builders merchant, Ireland</cite>
+    </figure>
+  </div>
+</section>
+
+<section class="section cta">
+  <div class="container">
+    <p class="label">Talk to us</p>
+    <h2 class="h2">Want to see it running?</h2>
+    <p class="lead" style="margin-top:1rem">QuoteTrack is live in production with a paying design partner today. Thirty minutes and we will show you it working.</p>
+    <div class="actions" style="margin-top:1.75rem">
+      <a class="btn btn--primary" href="index.html#demo">Request a demo</a>
+      <a class="btn btn--ghost" href="index.html#guide">Get the follow-up guide</a>
     </div>
+    <p class="form__note" style="margin-top:1.25rem">Or email <a href="mailto:thomas@quotetrack.io" style="color:var(--signal)">thomas@quotetrack.io</a> directly.</p>
+  </div>
+</section>
 
-    <!-- Footer CTA -->
-    <section class="footer-cta">
-        <h2>Want to see it in action?</h2>
-        <p>QuoteTrack is live and driving results with customers today.</p>
-        <a href="index.html" class="cta-primary">Book a 30-minute call</a>
-        <p style="margin-top: 1.5rem; font-size: 0.88rem; color: rgba(255,255,255,0.5);">Questions? <a href="mailto:thomas@quotetrack.io" class="email-link">thomas@quotetrack.io</a></p>
-    </section>
+</main>
 
-    <!-- Footer -->
-    <footer>
-        <p>© 2026 QuoteTrack Limited · <a href="mailto:thomas@quotetrack.io">thomas@quotetrack.io</a></p>
-    </footer>
-    <script>
-        let current = 0;
-        const slides = document.querySelectorAll('.quote-slide');
-        const dots = document.querySelectorAll('.quote-dot');
-        let timer = setInterval(nextSlide, 4000);
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <div>
+      <a class="wordmark" href="index.html" aria-label="QuoteTrack — home" style="margin-bottom:.9rem">
+        <img src="assets/logo-dark.svg" width="130" height="28" alt="QuoteTrack" loading="lazy">
+      </a>
+      <p>Open-quote intelligence for trade distributors.<br>
+      © 2026 QuoteTrack Limited · <a href="mailto:thomas@quotetrack.io">thomas@quotetrack.io</a></p>
+    </div>
+    <nav aria-label="Footer">
+      <a href="index.html#gap">The gap</a>
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#product">Product</a>
+      <a href="index.html#who">Who it’s for</a>
+      <a href="about.html">About</a>
+      <a href="https://app.quotetrack.io">Sign in</a>
+    </nav>
+  </div>
+</footer>
 
-        function goToSlide(n) {
-            slides[current].classList.remove('active');
-            dots[current].classList.remove('active');
-            current = n;
-            slides[current].classList.add('active');
-            dots[current].classList.add('active');
-            clearInterval(timer);
-            timer = setInterval(nextSlide, 4000);
-        }
+<script>
+(function () {
+  'use strict';
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasScrollTimeline = window.CSS && CSS.supports && CSS.supports('animation-timeline', 'scroll()');
 
-        function nextSlide() {
-            goToSlide((current + 1) % slides.length);
-        }
-    </script>
+  if (!reduce && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  }
+
+  if (!reduce && !hasScrollTimeline) {
+    var fill = document.querySelector('.scroll-rail__fill');
+    if (fill) {
+      var ticking = false;
+      var update = function () {
+        var h = document.documentElement.scrollHeight - window.innerHeight;
+        var p = h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)) : 0;
+        fill.style.setProperty('--scroll-progress', p.toFixed(4));
+        ticking = false;
+      };
+      window.addEventListener('scroll', function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      window.addEventListener('resize', update, { passive: true });
+      update();
+    }
+  }
+})();
+</script>
 </body>
 </html>

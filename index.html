@@ -1,1301 +1,728 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuoteTrack – Quote Pipeline Execution for Trade Distribution</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        :root {
-            --navy: #1a2e4a;
-            --navy-deep: #0e1c30;
-            --green: #22c55e;
-            --green-dark: #16a34a;
-            --red: #ef4444;
-            --gray-light: #f4f6f8;
-            --gray-medium: #e2e6ea;
-            --gray-dark: #5b6877;
-            --white: #ffffff;
-        }
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            color: var(--navy);
-            background-color: var(--white);
-            line-height: 1.6;
-        }
-        h1, h2, h3, h4 {
-            font-family: 'Inter Tight', 'Inter', sans-serif;
-        }
-        /* Header */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: var(--white);
-            border-bottom: 1px solid var(--gray-medium);
-            padding: 1rem 0;
-        }
-        .header-container {
-            max-width: 1140px;
-            margin: 0 auto;
-            padding: 0 2.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-family: 'Inter Tight', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-        }
-        .logo span:first-child {
-            color: var(--navy);
-        }
-        .logo span:last-child {
-            color: var(--green);
-        }
-        nav a {
-            margin-left: 2.5rem;
-            text-decoration: none;
-            color: var(--navy);
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: color 0.2s ease;
-        }
-        nav a:hover {
-            color: var(--green);
-        }
-        /* Hero */
-        .hero {
-            padding: 4.5rem 2.5rem 4rem;
-            background: var(--navy-deep);
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-        }
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--green) 0%, transparent 60%);
-        }
-        .hero-container {
-            max-width: 1140px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-        .hero h1 {
-            font-weight: 800;
-            font-size: 3rem;
-            line-height: 1.1;
-            margin-bottom: 1.25rem;
-            letter-spacing: -0.02em;
-            max-width: 680px;
-        }
-        .hero h1 span {
-            color: var(--green);
-        }
-        .hero-subtitle {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.72);
-            margin-bottom: 2rem;
-            max-width: 540px;
-            font-weight: 400;
-            line-height: 1.65;
-        }
-        .cta-primary {
-            display: inline-block;
-            background: var(--green);
-            color: var(--navy-deep);
-            padding: 0.85rem 2rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.95rem;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.2s ease;
-            border: none;
-            cursor: pointer;
-        }
-        .cta-primary:hover {
-            background: var(--green-dark);
-        }
-        /* Trusted By */
-        .trusted-by {
-            background: var(--gray-light);
-            padding: 2.25rem 2.5rem;
-            border-bottom: 1px solid var(--gray-medium);
-        }
-        .trusted-by-container {
-            max-width: 1140px;
-            margin: 0 auto;
-        }
-        .trusted-by-label {
-            text-align: center;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--gray-dark);
-            margin-bottom: 1.75rem;
-        }
-        .trusted-by-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0;
-            flex-wrap: wrap;
-        }
-        .trusted-by-item {
-            display: flex;
-            align-items: center;
-            padding: 0 2.5rem;
-        }
-        .trusted-by-item:not(:last-child) {
-            border-right: none;
-        }
-        .trusted-by-row img {
-            height: 38px;
-            width: auto;
-            object-fit: contain;
-        }
-        .trusted-by-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-        .trusted-by-card-name {
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--navy);
-            letter-spacing: -0.01em;
-        }
-        .trusted-by-card-desc {
-            font-size: 0.78rem;
-            color: var(--gray-dark);
-            margin-top: 0.15rem;
-        }
-        /* Backed By */
-        .backed-by {
-            background: var(--gray-light);
-            padding: 2.25rem 2.5rem;
-            border-top: 1px solid var(--gray-medium);
-        }
-        .backed-by-container {
-            max-width: 1140px;
-            margin: 0 auto;
-        }
-        .backed-by-label {
-            text-align: center;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--gray-dark);
-            margin-bottom: 1.5rem;
-        }
-        .backed-by-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .backed-by-row img {
-            height: 48px;
-            width: auto;
-            object-fit: contain;
-        }
-        @media (max-width: 600px) {
-            .trusted-by-item {
-                padding: 0.75rem 1.5rem;
-                border-right: none !important;
-                border-bottom: 1px solid var(--gray-medium);
-            }
-            .trusted-by-row img {
-                height: 30px;
-            }
-            .backed-by-row img {
-                height: 38px;
-            }
-        }
-        /* Content sections */
-        section {
-            padding: 4.5rem 2.5rem;
-            max-width: 1140px;
-            margin: 0 auto;
-        }
-        .section-eyebrow {
-            font-size: 0.78rem;
-            font-weight: 700;
-            letter-spacing: 0.07em;
-            text-transform: uppercase;
-            margin-bottom: 0.65rem;
-        }
-        .section-title {
-            font-size: 1.85rem;
-            font-weight: 700;
-            margin-bottom: 2.5rem;
-            letter-spacing: -0.01em;
-            max-width: 640px;
-        }
-        /* The Problem */
-        .problem {
-            background: var(--navy-deep);
-            max-width: 100%;
-            padding-left: 0;
-            padding-right: 0;
-        }
-        .problem-inner {
-            max-width: 1140px;
-            margin: 0 auto;
-            padding: 0 2.5rem;
-        }
-        .problem .section-eyebrow {
-            color: var(--green);
-        }
-        .problem .section-title {
-            color: var(--white);
-        }
-        .problem-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .problem-card {
-            background: var(--navy);
-            padding: 1.75rem 1.5rem;
-        }
-        .problem-stat {
-            font-weight: 800;
-            font-size: 2.25rem;
-            color: var(--white);
-            letter-spacing: -0.02em;
-            margin-bottom: 0.4rem;
-            line-height: 1;
-        }
-        .problem-stat.accent {
-            color: var(--green);
-        }
-        .problem-card h3 {
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 0.6rem;
-            color: var(--white);
-        }
-        .problem-card p {
-            color: rgba(255, 255, 255, 0.58);
-            line-height: 1.65;
-            font-size: 0.9rem;
-        }
-        /* The Product */
-        .product {
-            background: var(--white);
-        }
-        .product .section-eyebrow {
-            color: var(--green-dark);
-        }
-        .product-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-        .product-text h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: var(--navy);
-        }
-        .workflow-step {
-            display: flex;
-            margin-bottom: 1.75rem;
-            align-items: flex-start;
-        }
-        .workflow-number {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            background: var(--navy);
-            color: var(--white);
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            margin-right: 1.25rem;
-            flex-shrink: 0;
-        }
-        .workflow-text h4 {
-            margin-bottom: 0.35rem;
-            color: var(--navy);
-            font-size: 0.95rem;
-            font-weight: 700;
-        }
-        .workflow-text p {
-            color: var(--gray-dark);
-            font-size: 0.88rem;
-            line-height: 1.6;
-        }
-        .product-visual {
-            background: var(--gray-light);
-            border-radius: 10px;
-            padding: 1.5rem;
-            border: 1px solid var(--gray-medium);
-        }
-        .visual-header {
-            background: var(--navy-deep);
-            color: var(--white);
-            padding: 0.85rem 1rem;
-            border-radius: 6px;
-            margin-bottom: 1.25rem;
-            text-align: center;
-        }
-        .visual-header h4 {
-            font-size: 0.78rem;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-        }
-        /* At-Risk Queue preview */
-        .queue-preview {
-            background: var(--white);
-            border: 1px solid var(--gray-medium);
-            border-radius: 8px;
-            padding: 1rem 1.1rem;
-            margin-bottom: 1rem;
-        }
-        .queue-item {
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--gray-medium);
-        }
-        .queue-item:last-child {
-            border-bottom: none;
-        }
-        .queue-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 1rem;
-            margin-bottom: 0.3rem;
-        }
-        .queue-customer {
-            font-weight: 600;
-            color: var(--navy);
-            font-size: 0.9rem;
-        }
-        .queue-value {
-            font-weight: 700;
-            color: var(--navy);
-            font-size: 0.95rem;
-            white-space: nowrap;
-        }
-        .queue-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-        }
-        .queue-days {
-            font-size: 0.78rem;
-            color: var(--gray-dark);
-        }
-        .queue-tag {
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: var(--navy);
-            background: var(--gray-medium);
-            padding: 0.2rem 0.55rem;
-            border-radius: 4px;
-            white-space: nowrap;
-        }
-        .action-button {
-            width: 100%;
-            background: var(--navy);
-            color: var(--white);
-            border: none;
-            padding: 0.7rem;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            margin-top: 0.25rem;
-        }
-        /* Outcomes */
-        .outcomes {
-            background: var(--gray-light);
-        }
-        .outcomes .section-eyebrow {
-            color: var(--green-dark);
-        }
-        .outcomes-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1px;
-            background: var(--gray-medium);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .outcome-card {
-            background: var(--white);
-            padding: 1.75rem 1.5rem;
-        }
-        .outcome-card h3 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            margin-bottom: 0.3rem;
-            color: var(--navy);
-        }
-        .outcome-card > p {
-            color: var(--gray-dark);
-            font-size: 0.88rem;
-            margin-bottom: 1.1rem;
-        }
-        .role-list {
-            list-style: none;
-        }
-        .role-list li {
-            padding-left: 1.35rem;
-            position: relative;
-            color: var(--gray-dark);
-            font-size: 0.86rem;
-            margin-bottom: 0.55rem;
-            line-height: 1.5;
-        }
-        .role-list li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0.55em;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--green);
-        }
-        /* Sneak Peek / Platform */
-        .sneak-peek {
-            background: var(--white);
-        }
-        .sneak-peek .section-eyebrow {
-            color: var(--green-dark);
-        }
-        .sneak-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-        .sneak-text h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 1.25rem;
-            color: var(--navy);
-        }
-        .sneak-text p {
-            color: var(--gray-dark);
-            margin-bottom: 1.5rem;
-            line-height: 1.65;
-            font-size: 0.95rem;
-        }
-        .sneak-features {
-            list-style: none;
-        }
-        .sneak-features li {
-            margin-bottom: 0.9rem;
-            padding-left: 1.6rem;
-            position: relative;
-            color: var(--gray-dark);
-            line-height: 1.55;
-            font-size: 0.9rem;
-        }
-        .sneak-features li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0.5em;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--green);
-        }
-        .sneak-features li strong {
-            color: var(--navy);
-        }
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(14, 28, 48, 0.6);
-        }
-        .modal-content {
-            background-color: var(--white);
-            margin: 5% auto;
-            padding: 2rem;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 480px;
-            box-shadow: 0 12px 40px rgba(14, 28, 48, 0.25);
-        }
-        .close-modal {
-            color: var(--gray-dark);
-            float: right;
-            font-size: 26px;
-            font-weight: 400;
-            cursor: pointer;
-            transition: color 0.2s ease;
-            line-height: 1;
-        }
-        .close-modal:hover {
-            color: var(--navy);
-        }
-        .modal h2 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: var(--navy);
-        }
-        .modal-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-        }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-        .form-group label {
-            margin-bottom: 0.4rem;
-            font-weight: 600;
-            color: var(--navy);
-            font-size: 0.88rem;
-        }
-        .form-group input,
-        .form-group textarea {
-            padding: 0.65rem 0.75rem;
-            border: 1px solid var(--gray-medium);
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            transition: border-color 0.2s ease;
-        }
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--green);
-            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
-        }
-        .form-group textarea {
-            resize: vertical;
-            min-height: 90px;
-        }
-        .form-submit {
-            background: var(--navy);
-            color: var(--white);
-            padding: 0.75rem;
-            border: none;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 0.92rem;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-        .form-submit:hover {
-            background: var(--navy-deep);
-        }
-        .sneak-visual {
-            background: var(--gray-light);
-            border-radius: 10px;
-            padding: 1.5rem;
-            border: 1px solid var(--gray-medium);
-        }
-        /* Branch Dashboard preview */
-        .dashboard-preview {
-            background: var(--white);
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid var(--gray-medium);
-        }
-        .dashboard-header {
-            background: var(--navy-deep);
-            color: var(--white);
-            padding: 0.85rem 1.25rem;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .dashboard-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1px;
-            background: var(--gray-medium);
-            text-align: center;
-        }
-        .dashboard-stat {
-            background: var(--white);
-            padding: 1.25rem 0.5rem;
-        }
-        .dashboard-stat-value {
-            font-weight: 800;
-            font-size: 1.5rem;
-            color: var(--navy);
-            letter-spacing: -0.01em;
-        }
-        .dashboard-stat-value.alert {
-            color: var(--red);
-        }
-        .dashboard-stat-label {
-            font-size: 0.72rem;
-            color: var(--gray-dark);
-            margin-top: 0.3rem;
-            line-height: 1.4;
-        }
-        .dashboard-alert {
-            background: rgba(239, 68, 68, 0.06);
-            border-top: 1px solid rgba(239, 68, 68, 0.2);
-            padding: 0.9rem 1.25rem;
-            font-size: 0.82rem;
-            color: var(--navy);
-            line-height: 1.5;
-        }
-        /* Quote Carousel */
-        .quote-block {
-            background: var(--navy-deep);
-            padding: 4.5rem 2.5rem;
-        }
-        .quote-block-inner {
-            max-width: 720px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        .quote-carousel {
-            position: relative;
-            min-height: 160px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .quote-slide {
-            position: absolute;
-            width: 100%;
-            opacity: 0;
-            transition: opacity 0.6s ease;
-            pointer-events: none;
-        }
-        .quote-slide.active {
-            opacity: 1;
-            pointer-events: auto;
-            position: relative;
-        }
-        .quote-block blockquote {
-            font-size: 1.15rem;
-            line-height: 1.8;
-            color: rgba(255,255,255,0.85);
-            font-style: italic;
-            margin-bottom: 1.5rem;
-        }
-        .quote-block cite {
-            font-size: 0.78rem;
-            font-weight: 700;
-            font-style: normal;
-            color: var(--green);
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-        }
-        .quote-dots {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-top: 2rem;
-        }
-        .quote-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.25);
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            transition: background 0.3s ease;
-        }
-        .quote-dot.active { background: var(--green); }
-        /* Guide Modal */
-        .guide-modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(14, 28, 48, 0.65);
-        }
-        .guide-modal-content {
-            background: var(--white);
-            margin: 8% auto;
-            padding: 2.25rem;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 460px;
-            box-shadow: 0 12px 40px rgba(14, 28, 48, 0.25);
-        }
-        .guide-modal-content h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 0.4rem;
-        }
-        .guide-modal-content p {
-            font-size: 0.88rem;
-            color: var(--gray-dark);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-        .guide-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .guide-form input {
-            padding: 0.65rem 0.85rem;
-            border: 1px solid var(--gray-medium);
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            transition: border-color 0.2s ease;
-        }
-        .guide-form input:focus {
-            outline: none;
-            border-color: var(--green);
-            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
-        }
-        .guide-submit {
-            background: var(--navy);
-            color: var(--white);
-            padding: 0.75rem;
-            border: none;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 0.92rem;
-            font-family: inherit;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-        .guide-submit:hover { background: var(--navy-deep); }
-        .guide-submit:disabled { opacity: 0.6; cursor: not-allowed; }
-        .guide-success {
-            display: none;
-            text-align: center;
-            padding: 1rem 0;
-        }
-        .guide-success p {
-            font-size: 0.95rem;
-            color: var(--navy);
-            margin-bottom: 1.25rem;
-        }
-        .guide-download-btn {
-            display: inline-block;
-            background: var(--green);
-            color: var(--navy-deep);
-            padding: 0.85rem 2rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.95rem;
-            transition: background 0.2s ease;
-        }
-        .guide-download-btn:hover { background: var(--green-dark); }
-        /* Footer CTA */
-        .footer-cta {
-            background: var(--navy-deep);
-            color: var(--white);
-            padding: 4rem 2.5rem;
-            text-align: center;
-        }
-        .footer-cta h2 {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            letter-spacing: -0.01em;
-        }
-        .footer-cta p {
-            font-size: 1rem;
-            margin-bottom: 2rem;
-            color: rgba(255, 255, 255, 0.7);
-            max-width: 560px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .footer-cta a {
-            color: var(--green);
-            text-decoration: none;
-        }
-        .footer-cta a:hover {
-            text-decoration: underline;
-        }
-        /* Footer */
-        footer {
-            background: var(--navy-deep);
-            color: rgba(255, 255, 255, 0.5);
-            padding: 1.5rem 2.5rem;
-            text-align: center;
-            font-size: 0.85rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        footer a {
-            color: var(--green);
-            text-decoration: none;
-        }
-        footer a:hover {
-            text-decoration: underline;
-        }
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.25rem;
-            }
-            .section-title {
-                font-size: 1.5rem;
-            }
-            .product-content,
-            .sneak-content {
-                grid-template-columns: 1fr;
-            }
-            .problem-grid,
-            .outcomes-grid {
-                grid-template-columns: 1fr;
-            }
-            nav a {
-                margin-left: 1.25rem;
-                font-size: 0.82rem;
-            }
-            .header-container {
-                padding: 0 1.25rem;
-            }
-            section {
-                padding: 3rem 1.5rem;
-            }
-            .problem-inner {
-                padding: 0 1.5rem;
-            }
-            .hero {
-                padding: 3rem 1.5rem;
-            }
-            .trusted-by {
-                padding: 2rem 1.5rem;
-            }
-            .footer-cta {
-                padding: 3rem 1.5rem;
-            }
-            .dashboard-stats {
-                grid-template-columns: 1fr;
-            }
-        }
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 1.85rem;
-            }
-            .section-title {
-                font-size: 1.3rem;
-            }
-            nav {
-                display: none;
-            }
-            .dashboard-header {
-                flex-direction: column;
-                text-align: center;
-                gap: 0.5rem;
-            }
-            .queue-top,
-            .queue-meta {
-                flex-wrap: wrap;
-            }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QuoteTrack — the action layer for trade distribution</title>
+<meta name="description" content="Trade distributors issue hundreds of quotes a week and chase almost none of them. QuoteTrack sits on top of your ERP and turns every open quote into a ranked daily action for the rep. Live in production with a paying design partner.">
+<meta name="theme-color" content="#08131f">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://www.quotetrack.io/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="QuoteTrack — the action layer for trade distribution">
+<meta property="og:description" content="Putting sales reps back in the driving seat. Built for the trade, by people from the trade.">
+<meta property="og:url" content="https://www.quotetrack.io/">
+<meta property="og:image" content="https://www.quotetrack.io/assets/logo-dark-2x.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preload" href="assets/fonts/schibsted-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+<script>
+/* Opt into the hidden-until-revealed state only when we can definitely
+   reveal it again: IntersectionObserver present, motion not reduced.
+   Otherwise the page renders complete, which is also the no-JS path. */
+if ('IntersectionObserver' in window &&
+    !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+  document.documentElement.className += ' js';
+}
+</script>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <span>Quote</span><span>Track</span>
-            </div>
-            <nav>
-                <a href="#problem">Problem</a>
-                <a href="#product">How it works</a>
-                <a href="#outcomes">Built for your team</a>
-                <a href="#sneak-peek">Platform</a>
-                <a href="about.html">About</a>
-            </nav>
-        </div>
-    </header>
-    <!-- Hero -->
-    <section class="hero">
-        <div class="hero-container">
-            <h1>Every lost <span>quote</span> is a lost sale</h1>
-            <p class="hero-subtitle">QuoteTrack connects to your ERP and surfaces at-risk quotes before they go cold, so your team acts on the right opportunities at the right time.</p>
-            <button class="cta-primary" onclick="document.getElementById('demo-modal').style.display='block'">Book a demo</button>
-            <button class="cta-primary" style="background: transparent; border: 1.5px solid rgba(255,255,255,0.3); color: var(--white); margin-left: 1rem;" onclick="document.getElementById('guide-modal').style.display='block'">Download the follow-up guide</button>
-        </div>
-    </section>
-    <!-- Trusted By -->
-    <section class="trusted-by">
-        <div class="trusted-by-container">
-            <p class="trusted-by-label">Trusted by builders merchants across Ireland and the UK</p>
-            <div class="trusted-by-row">
-                <div class="trusted-by-item">
-    <img src="assets/south-coast-logo.png" alt="South Coast Building Supplies">
-</div>
-            </div>
-        </div>
-    </section>
-    <!-- Problem -->
-    <section id="problem" class="problem">
-        <div class="problem-inner">
-            <p class="section-eyebrow">The problem</p>
-            <h2 class="section-title">Builders merchants issue hundreds of quotes a week. Most disappear into silence.</h2>
 
-            <div class="problem-grid">
-                <div class="problem-card">
-                    <div class="problem-stat">&lt;40%</div>
-                    <h3>of quotes are followed up</h3>
-                    <p>Quotes aren't easily visible, no one has a system to follow up with, and nowhere drives action.</p>
-                </div>
-                <div class="problem-card">
-                    <div class="problem-stat">€000s</div>
-                    <h3>lost per branch, every month</h3>
-                    <p>Relationships are crucial but when price is a factor, follow-up and rigour become vital. Consistency wins.</p>
-                </div>
-                <div class="problem-card">
-                    <div class="problem-stat accent">Zero</div>
-                    <h3>visibility without QuoteTrack</h3>
-                    <p>No ERP flags what's at risk or going cold. ERPs give you reactive data, by the time you see it, it's too late.</p>
-                </div>
-            </div>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="scroll-rail" aria-hidden="true"><div class="scroll-rail__fill"></div></div>
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="wordmark" href="/" aria-label="QuoteTrack — home">
+      <img src="assets/logo-dark.svg" width="150" height="32" alt="QuoteTrack">
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#gap">The gap</a>
+      <a href="#how">How it works</a>
+      <a href="#product">Product</a>
+      <a href="#who">Who it's for</a>
+      <a href="about.html">About</a>
+    </nav>
+    <a class="btn btn--primary btn--sm" href="#demo">Request a demo</a>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ======================================================================
+     1 — Hero
+     ====================================================================== -->
+<section class="hero">
+  <div class="container hero__inner">
+    <p class="hero__flag"><span class="dot" aria-hidden="true"></span>Live in production. Paying design partner.</p>
+
+    <div class="hero__grid">
+      <div class="hero__col-a">
+        <h1 class="display kinetic"><span class="kw"><span>Putting</span></span> <span class="kw"><span>sales</span></span> <span class="kw"><span>reps</span></span> <span class="kw"><span>back</span></span> <span class="kw"><span>in</span></span> <span class="kw"><span>the</span></span> <span class="kw"><span>driving</span></span> <span class="kw"><span>seat.</span></span></h1>
+
+        <p class="hero__sub">Built for the trade, by people from the trade.</p>
+
+        <p class="lead hero__anchor">Builders merchants, electrical, plumbing, civils and stone. QuoteTrack sits on top of the ERP you already run, gets the quote out in minutes instead of an afternoon, and chases every one of them until there is an answer.</p>
+
+        <div class="actions">
+          <a class="btn btn--primary" href="#demo">Request a demo</a>
+          <a class="btn btn--ghost" href="#guide">Get the follow-up guide</a>
         </div>
-    </section>
-    <!-- Quote Carousel -->
-    <div class="quote-block">
-        <div class="quote-block-inner">
-            <div class="quote-carousel">
-                <div class="quote-slide active">
-                    <blockquote>"We have been looking around the market for the last two years — and what we found is that the CRM-first systems are overkill, and the other bits are finance tools more so than sales rep enablers. There is a gap."</blockquote>
-                    <cite>Sales Director · Irish Builders Merchants</cite>
-                </div>
-                <div class="quote-slide">
-                    <blockquote>"I've never seen so much data and so many spreadsheets. But so little insight."</blockquote>
-                    <cite>Commercial Director · UK Builders Merchants</cite>
-                </div>
-                <div class="quote-slide">
-                    <blockquote>"The big hole in it is that we don't know when a quotation is issued, what job it's for, and then we can't chase it up."</blockquote>
-                    <cite>National Sales Director · Irish Builders Merchants</cite>
-                </div>
-                <div class="quote-slide">
-                    <blockquote>"Quote follow-up is something we have struggled with — and it's something that any place I've worked, and this is my fifth merchants, has struggled with."</blockquote>
-                    <cite>Group Sales Manager · Irish Builders Merchants</cite>
-                </div>
-                <div class="quote-slide">
-                    <blockquote>"It's very easy to lose hold of things. It's easy to get access to see things that I can't find in the ERP."</blockquote>
-                    <cite>Sales Rep · UK Builders Merchants</cite>
-                </div>
-            </div>
-            <div class="quote-dots">
-                <button class="quote-dot active" onclick="goToSlide(0)"></button>
-                <button class="quote-dot" onclick="goToSlide(1)"></button>
-                <button class="quote-dot" onclick="goToSlide(2)"></button>
-                <button class="quote-dot" onclick="goToSlide(3)"></button>
-                <button class="quote-dot" onclick="goToSlide(4)"></button>
-            </div>
+      </div>
+
+      <!-- Decorative: the same surfaces are presented properly, with text, in
+           §product. aria-hidden so the page is not read out twice. -->
+      <div class="hero__demo" aria-hidden="true">
+        <div class="panel-light ui hero-demo">
+          <span class="hero-demo__sweep"></span>
+          <div class="ui__bar">
+            <span class="ui__title">Today</span>
+            <span class="ui__meta">Ranked by value at risk</span>
+          </div>
+          <div class="q-card hero-demo__row hero-demo__row--done">
+            <div class="q-top"><span class="q-name">Customer A</span><span class="q-value">&euro;47,000</span></div>
+            <div class="q-meta"><span class="q-age q-age--hot">142 days</span><span class="q-done">Called &middot; back Thursday</span></div>
+          </div>
+          <div class="q-card hero-demo__row">
+            <div class="q-top"><span class="q-name">Customer B</span><span class="q-value">&euro;31,000</span></div>
+            <div class="q-meta"><span class="q-age q-age--hot">118 days</span><span>Precast hollowcore</span></div>
+          </div>
+          <div class="q-card hero-demo__row">
+            <div class="q-top"><span class="q-name">Customer C</span><span class="q-value">&euro;9,100</span></div>
+            <div class="q-meta"><span class="q-age">21 days</span><span>Drainage package</span></div>
+          </div>
+          <p class="hero-demo__foot">In the rep&rsquo;s inbox at 7am. No login, nothing to type up.</p>
         </div>
+      </div>
     </div>
-    <!-- Product -->
-    <section id="product" class="product">
-        <p class="section-eyebrow">How it works</p>
-        <h2 class="section-title" style="color: var(--navy);">Connects to your ERP. Surfaces what matters.</h2>
 
-        <div class="product-content">
-            <div class="product-text">
-                <div class="workflow-step">
-                    <div class="workflow-number">1</div>
-                    <div class="workflow-text">
-                        <h4>Connects to your ERP</h4>
-                        <p>Pulls quote data directly from your ERP. Intact, Kerridge, Epicor and more. No disruption. Your data stays where it is.</p>
-                    </div>
-                </div>
-                <div class="workflow-step">
-                    <div class="workflow-number">2</div>
-                    <div class="workflow-text">
-                        <h4>Identifies at-risk quotes</h4>
-                        <p>Flags quotes by value, age, customer tier and behaviour automatically, across every branch.</p>
-                    </div>
-                </div>
-                <div class="workflow-step">
-                    <div class="workflow-number">3</div>
-                    <div class="workflow-text">
-                        <h4>Recommends next actions</h4>
-                        <p>Sales reps see a prioritised follow-up list. Managers see pipeline health. Everyone knows what to do next.</p>
-                    </div>
-                </div>
-                <div class="workflow-step">
-                    <div class="workflow-number">4</div>
-                    <div class="workflow-text">
-                        <h4>Tracks outcomes</h4>
-                        <p>Win/loss is tracked against the actions taken. Over time, QuoteTrack gets smarter about what works for your business.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="product-visual">
-                <div class="visual-header">
-                    <h4>At-Risk Queue</h4>
-                </div>
-                <div class="queue-preview">
-                    <div class="queue-item">
-                        <div class="queue-top">
-                            <span class="queue-customer">Harkin Construction</span>
-                            <span class="queue-value">€4,250</span>
-                        </div>
-                        <div class="queue-meta">
-                            <span class="queue-days">62 days, no activity</span>
-                            <span class="queue-tag">1st follow-up</span>
-                        </div>
-                    </div>
-                    <div class="queue-item">
-                        <div class="queue-top">
-                            <span class="queue-customer">Flanagan Builders</span>
-                            <span class="queue-value">€9,740</span>
-                        </div>
-                        <div class="queue-meta">
-                            <span class="queue-days">14 days since quote</span>
-                            <span class="queue-tag">Awaiting decision</span>
-                        </div>
-                    </div>
-                    <div class="queue-item">
-                        <div class="queue-top">
-                            <span class="queue-customer">Boylan Plumbing & Heating</span>
-                            <span class="queue-value">€1,890</span>
-                        </div>
-                        <div class="queue-meta">
-                            <span class="queue-days">138 days</span>
-                            <span class="queue-tag">Long-term project</span>
-                        </div>
-                    </div>
-                </div>
-                <button class="action-button">View At-Risk Queue</button>
-            </div>
-        </div>
-    </section>
-    <!-- Outcomes -->
-    <section id="outcomes" class="outcomes">
-        <p class="section-eyebrow">Built for your team</p>
-        <h2 class="section-title" style="color: var(--navy);">One platform. Different views for every role.</h2>
+    <dl class="hero__facts">
+      <div class="hero__fact">
+        <dt>Status</dt>
+        <dd>Live in production, daily</dd>
+      </div>
+      <div class="hero__fact">
+        <dt>Design partner</dt>
+        <dd>Paid technical pilot, shipped</dd>
+      </div>
+      <div class="hero__fact">
+        <dt>Where</dt>
+        <dd>Ireland &amp; the UK</dd>
+      </div>
+    </dl>
+  </div>
+</section>
 
-        <div class="outcomes-grid">
-            <div class="outcome-card">
-                <h3>Branch Managers</h3>
-                <p>Full pipeline visibility.</p>
-                <ul class="role-list">
-                    <li>See every open quote across your branch</li>
-                    <li>Know which reps need support</li>
-                    <li>Track quote-to-order conversion in real time</li>
-                </ul>
-            </div>
-            <div class="outcome-card">
-                <h3>Sales Reps</h3>
-                <p>Know exactly who to call next.</p>
-                <ul class="role-list">
-                    <li>Prioritised daily follow-up list</li>
-                    <li>Context on every quote before you call</li>
-                    <li>Log outcomes in seconds</li>
-                </ul>
-            </div>
-            <div class="outcome-card">
-                <h3>Sales Directors</h3>
-                <p>Group-level commercial intelligence.</p>
-                <ul class="role-list">
-                    <li>Cross-branch quote performance</li>
-                    <li>Win/loss trends by product and customer</li>
-                    <li>Revenue recovery reporting</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-    <!-- Platform -->
-    <section id="sneak-peek" class="sneak-peek">
-        <p class="section-eyebrow">The platform</p>
-        <h2 class="section-title" style="color: var(--navy);">Built for branch managers and sales teams, not data analysts.</h2>
-
-        <div class="sneak-content">
-            <div class="sneak-text">
-                <p>A clean, focused interface that turns your ERP's quote data into a daily list of what needs attention, and a clear view of pipeline health across every branch.</p>
-
-                <ul class="sneak-features">
-                    <li><strong>At-Risk Queue</strong> — prioritised list of quotes needing attention, by value and urgency</li>
-                    <li><strong>Next-Best Action</strong> — one-click recommended action per quote, no guesswork for reps</li>
-                    <li><strong>Branch Dashboard</strong> — manager view of pipeline health across all active quotes</li>
-                </ul>
-            </div>
-            <div class="sneak-visual">
-                <div class="dashboard-preview">
-                    <div class="dashboard-header">
-                        <span>Branch Snapshot</span>
-                        <span style="font-size: 0.78rem; color: rgba(255,255,255,0.6);">Last 30 days</span>
-                    </div>
-                    <div class="dashboard-stats">
-                        <div class="dashboard-stat">
-                            <div class="dashboard-stat-value">€2.6M</div>
-                            <div class="dashboard-stat-label">Open quote value</div>
-                        </div>
-                        <div class="dashboard-stat">
-                            <div class="dashboard-stat-value alert">110</div>
-                            <div class="dashboard-stat-label">Aging 30+ days</div>
-                        </div>
-                        <div class="dashboard-stat">
-                            <div class="dashboard-stat-value">36</div>
-                            <div class="dashboard-stat-label">Actioned this week</div>
-                        </div>
-                    </div>
-                    <div class="dashboard-alert">
-                        110 quotes need following up, no activity in 14+ days. No ERP activity and not actioned in QuoteTrack.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Backed By -->
-    <section class="backed-by">
-        <div class="backed-by-container">
-            <p class="backed-by-label">Backed by</p>
-            <div class="backed-by-row">
-                <img src="assets/ignite-logo.png" alt="Ignite Programme">
-            </div>
-        </div>
-    </section>
-    <!-- Footer CTA -->
-    <section id="cta-section" class="footer-cta">
-        <h2>Let's talk about what you're leaving on the table.</h2>
-        <p>QuoteTrack is live and driving results with customers today.</p>
-        <button class="cta-primary" onclick="document.getElementById('demo-modal').style.display='block'">Book a 30-minute call</button>
-        <p style="margin-top: 1.5rem; font-size: 0.92rem; color: rgba(255,255,255,0.6);">Questions? <a href="mailto:thomas@quotetrack.io">thomas@quotetrack.io</a></p>
-    </section>
-    <!-- Demo Modal -->
-    <div id="demo-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="document.getElementById('demo-modal').style.display='none'">&times;</span>
-            <h2>Request a demo</h2>
-
-            <form class="modal-form" action="https://formspree.io/f/mgorjjjd" method="POST">
-                <div class="form-group">
-                    <label for="name">Your Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="company">Company</label>
-                    <input type="text" id="company" name="company">
-                </div>
-
-                <div class="form-group">
-                    <label for="message">Tell us about your business</label>
-                    <textarea id="message" name="message" placeholder="Number of reps, branches, ERP system, etc."></textarea>
-                </div>
-
-                <button type="submit" class="form-submit">Send Demo Request</button>
-            </form>
-        </div>
+<section class="partners">
+  <div class="container">
+    <p class="partners__label">Live with, and backed by</p>
+    <div class="partners__row">
+      <img class="logo-scb" src="assets/south-coast-logo.png" alt="South Coast Building Supplies" width="220" height="34" loading="lazy">
+      <img class="logo-ignite" src="assets/ignite-logo.png" alt="Ignite Programme" width="110" height="30" loading="lazy">
     </div>
-    <!-- Close modal when clicking outside -->
-    <!-- Guide Modal -->
-    <div id="guide-modal" class="guide-modal">
-        <div class="guide-modal-content">
-            <span class="close-modal" onclick="document.getElementById('guide-modal').style.display='none'">&times;</span>
-            <h3>Free guide: Quote follow-up that actually works</h3>
-            <p>Five process fixes for builders merchants. Enter your details and we'll send it straight to you.</p>
-            <div class="guide-form-wrap">
-                <form class="guide-form" id="guide-form">
-                    <input type="text" name="name" placeholder="Your name" required>
-                    <input type="text" name="company" placeholder="Company" required>
-                    <input type="email" name="email" placeholder="Email address" required>
-                    <button type="submit" class="guide-submit">Get the guide</button>
-                </form>
-                <div class="guide-success" id="guide-success">
-                    <p>You're all set. Click below to download the guide.</p>
-                    <a href="assets/quote-followup-guide.pdf" download class="guide-download-btn">Download now</a>
-                </div>
-            </div>
-        </div>
+  </div>
+</section>
+
+<!-- ======================================================================
+     2 — The gap (the problem, in numbers)
+     ====================================================================== -->
+<section class="section" id="gap">
+  <div class="container">
+    <p class="label">The gap</p>
+    <h2 class="h2 reveal">Everything comes in. Nothing gets chased.</h2>
+    <p class="lead reveal reveal-2" style="margin-top:1rem">A quote request reaches a merchant six ways before lunch. Every one of them lands on the same rep, and every one of them has to be turned into a priced quote by hand. Then the ERP records it — and nothing counts the days, and nothing raises a hand.</p>
+
+    <dl class="stats reveal reveal-2">
+      <div class="stat">
+        <dt>To build one quote</dt>
+        <dd><span class="stat__n">Up to 3 hours</span><span class="stat__p">by hand, before it has even gone out the door.</span></dd>
+      </div>
+      <div class="stat">
+        <dt>Get a second contact</dt>
+        <dd><span class="stat__n">Under half</span><span class="stat__p">of quotes, once they are issued.</span></dd>
+      </div>
+      <div class="stat">
+        <dt>Ways a request arrives</dt>
+        <dd><span class="stat__n">Six</span><span class="stat__p">channels before lunch — and none of them feed the ERP.</span></dd>
+      </div>
+      <div class="stat">
+        <dt>Chased by the ERP</dt>
+        <dd><span class="stat__n">None</span><span class="stat__p">It records. It does not chase.</span></dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- ======================================================================
+     3 — The cost
+     ====================================================================== -->
+<section class="section" id="cost">
+  <div class="container">
+    <p class="label">The cost</p>
+    <div class="cost-grid">
+      <div class="reveal">
+        <p class="bignum num"><span data-count-to="7">7</span></p>
+        <span class="bignum__unit">days before a quote has gone cold</span>
+        <p class="bignum__src">A rule of thumb we were given by a sales director in the trade: after about a week without contact, the quote is usually gone.</p>
+      </div>
+      <div class="reveal reveal-2">
+        <h2 class="h2">Ask a branch what it loses this way. Nobody can answer.</h2>
+        <p class="lead" style="margin-top:1.25rem">Not because nobody cares &mdash; because nothing counts it. Quotes that were never chased do not appear in a report, or a month-end pack, and never get argued about in a meeting.</p>
+        <p class="cost-note">A cost you cannot see is a cost you never fix.</p>
+      </div>
     </div>
-    <script>
-        // Guide form
-        document.getElementById('guide-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const btn = this.querySelector('.guide-submit');
-            btn.disabled = true;
-            btn.textContent = 'Sending...';
-            const data = new FormData(this);
-            try {
-                await fetch('https://formspree.io/f/mqeroknw', {
-                    method: 'POST',
-                    body: data,
-                    headers: { 'Accept': 'application/json' }
-                });
-            } catch(err) {}
-            this.style.display = 'none';
-            document.getElementById('guide-success').style.display = 'block';
+  </div>
+</section>
+
+<!-- ======================================================================
+     4 — The turn (as-is → supercharged)
+     ====================================================================== -->
+<section class="section" id="how">
+  <div class="container">
+    <p class="label">How it works</p>
+    <h2 class="h2 reveal">We drive action. We drive sales.</h2>
+    <p class="lead reveal reveal-2" style="margin-top:1rem">The same six channels, the same ERP, the same rep. Here is what changes when the work gets a system behind it.</p>
+
+    <div class="duel reveal reveal-2" id="duel">
+
+      <div class="duel__stage">
+
+        <div class="duel__sweep" aria-hidden="true"></div>
+
+        <figure class="duel__panel duel__panel--asis" data-panel="asis">
+          <p class="duel__panel-k">Today</p>
+          <ul class="duel__channels" aria-hidden="true">
+            <li>WhatsApp</li><li>Phone call</li><li>Email &amp; drawings</li><li>Trade counter</li><li>Voicenote</li><li>QS take-off</li>
+          </ul>
+          <div class="duel__row">
+            <div class="duel__node">
+              <span class="duel__node-k">The rep</span>
+              <strong>2–3 hours to build one quote, by hand</strong>
+              <span class="duel__node-sub">Reading drawings, pricing lines, rebuilding a quote that half exists somewhere else.</span>
+            </div>
+            <svg class="duel__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="duel__node duel__node--erp">
+              <span class="duel__node-k">The ERP</span>
+              <strong>Records it.</strong>
+              <span class="duel__node-sub">Nothing counts the days. Nothing raises a hand.</span>
+            </div>
+            <svg class="duel__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="duel__node duel__node--out">
+              <span class="duel__node-k">The result</span>
+              <span class="pill pill--cold">Gone cold</span>
+              <span class="duel__node-sub">Nobody notices.</span>
+            </div>
+          </div>
+          <figcaption class="duel__caption">So the quote goes cold, and the rep becomes an order-taker.</figcaption>
+        </figure>
+
+        <figure class="duel__panel duel__panel--super" data-panel="super">
+          <p class="duel__panel-k duel__panel-k--super">With QuoteTrack</p>
+          <ul class="duel__channels" aria-hidden="true">
+            <li>WhatsApp</li><li>Phone call</li><li>Email &amp; drawings</li><li>Trade counter</li><li>Voicenote</li><li>QS take-off</li>
+          </ul>
+          <div class="duel__row">
+            <div class="duel__node duel__node--engine">
+              <span class="duel__node-k">QuoteTrack</span>
+              <strong>Captures, prices, stages.</strong>
+              <span class="duel__node-sub">Reads the request, resolves your products, stages the quote for the rep to check.</span>
+            </div>
+            <svg class="duel__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="duel__node duel__node--erp">
+              <span class="duel__node-k">Your ERP</span>
+              <strong>Unchanged.</strong>
+              <span class="duel__node-sub">Still the system of record. No migration, no second database.</span>
+            </div>
+            <svg class="duel__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="duel__node duel__node--out">
+              <span class="duel__node-k">The result</span>
+              <span class="pill pill--won">Won</span>
+              <span class="duel__node-sub">The sale lands.</span>
+            </div>
+          </div>
+          <figcaption class="duel__caption">Chase and convert. Then the job is won.</figcaption>
+        </figure>
+
+      </div>
+
+      <div class="duel__controls" role="group" aria-label="Compare before and after QuoteTrack">
+        <button class="duel__tab" type="button" aria-pressed="true" data-tab="asis">Today</button>
+        <button class="duel__tab" type="button" aria-pressed="false" data-tab="super">With QuoteTrack</button>
+      </div>
+    </div>
+
+    <p class="flow-line reveal">The ERP is the database. We build agents to drive action.</p>
+  </div>
+</section>
+
+<!-- ======================================================================
+     5 — Rollout (light band — breaks 8,000px of navy, and answers IT)
+     ====================================================================== -->
+<section class="section section--light" id="rollout">
+  <div class="container">
+    <p class="label">Getting started</p>
+    <h2 class="h2 reveal">Live in weeks, not quarters. No data entry, ever.</h2>
+    <p class="lead reveal reveal-2" style="margin-top:1rem">Nothing to migrate, nothing to re-key, and no change to how anyone quotes. The reps carry on exactly as they are.</p>
+
+    <ol class="steps reveal reveal-2">
+      <li class="step">
+        <span class="step__n">01</span>
+        <h3>Connect your ERP</h3>
+        <p>A read-only sync with the systems the trade actually runs. Your data stays where it is, and stays yours.</p>
+      </li>
+      <li class="step">
+        <span class="step__n">02</span>
+        <h3>Every quote gets tagged to a job</h3>
+        <p>One job across five branches and three verticals reads as one project, not five unrelated quotes.</p>
+      </li>
+      <li class="step">
+        <span class="step__n">03</span>
+        <h3>Follow-up runs itself</h3>
+        <p>Chases go out on schedule in the rep&rsquo;s name, without the rep writing them. Replies come straight back to the rep.</p>
+      </li>
+      <li class="step">
+        <span class="step__n">04</span>
+        <h3>One list lands each morning</h3>
+        <p>Who to call, what has gone quiet, what is slipping. Ranked by value, in the inbox before the first coffee.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ======================================================================
+     6 — Built and live
+     ====================================================================== -->
+<section class="section" id="product">
+  <div class="container">
+    <p class="label">Built and live</p>
+    <h2 class="h2 reveal">A quote used to take an afternoon. Now it takes minutes.</h2>
+    <p class="lead reveal reveal-2" style="margin-top:1rem">Built with South Coast Building Supplies on a paid technical pilot, and running in branches since. Not a prototype &mdash; reps open this every morning.</p>
+
+    <div class="product-grid">
+
+      <div class="product-item reveal">
+        <h3>The at-risk queue</h3>
+        <p>What is going cold, ranked by value. No filtering, no report to run, no spreadsheet to keep. It is just the list.</p>
+        <div class="panel-light ui">
+          <div class="ui__bar">
+            <span class="ui__title">Today</span>
+            <span class="ui__meta">Sorted by days since last activity</span>
+          </div>
+          <div class="q-card">
+            <div class="q-top"><span class="q-name">Customer A</span><span class="q-value">€47,000</span></div>
+            <div class="q-meta"><span class="q-age q-age--hot">142 days</span><span>Retaining wall system</span></div>
+          </div>
+          <div class="q-card">
+            <div class="q-top"><span class="q-name">Customer B</span><span class="q-value">€31,000</span></div>
+            <div class="q-meta"><span class="q-age q-age--hot">118 days</span><span>Precast hollowcore</span></div>
+          </div>
+          <div class="q-card">
+            <div class="q-top"><span class="q-name">Customer C</span><span class="q-value">€9,100</span></div>
+            <div class="q-meta"><span class="q-age">21 days</span><span>Drainage package</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-item reveal reveal-2">
+        <h3>Next-best action</h3>
+        <p>One click. No diary, no spreadsheet, no CRM to feed. The follow-up schedules itself and the quote comes back on the day it should.</p>
+        <div class="panel-light ui">
+          <div class="ui__bar">
+            <span class="ui__title">Customer B</span>
+            <span class="ui__meta">€31,000 · 118 days</span>
+          </div>
+          <div class="q-card">
+            <div class="q-meta" style="margin-bottom:.15rem">What happens next</div>
+            <div class="q-actions">
+              <span class="q-btn q-btn--on">Following up</span>
+              <span class="q-btn">Awaiting decision</span>
+              <span class="q-btn">Snooze</span>
+              <span class="q-btn">Long-term project</span>
+              <span class="q-btn q-btn--go">Won</span>
+              <span class="q-btn">Lost</span>
+            </div>
+          </div>
+          <div class="q-card">
+            <div class="q-meta" style="margin-bottom:.15rem">What I just did</div>
+            <div class="q-actions">
+              <span class="q-btn">Called</span>
+              <span class="q-btn">Email</span>
+            </div>
+          </div>
+          <p class="ui__note">Logged. Back in front of you in 3 days.</p>
+        </div>
+      </div>
+
+      <div class="product-item reveal reveal-3">
+        <h3>The branch dashboard</h3>
+        <p>Every branch, one view, first time. It measures the part you can actually change: whether the quotes are being worked, branch by branch and rep by rep.</p>
+        <div class="panel-light ui">
+          <div class="ui__bar">
+            <span class="ui__title">Snapshot</span>
+            <span class="ui__meta">All branches</span>
+          </div>
+          <dl class="kpis">
+            <div class="kpi"><dt>Open quote value</dt><dd>€2.6m</dd></div>
+            <div class="kpi"><dt>At risk · 30+ days</dt><dd>110</dd></div>
+            <div class="kpi"><dt>Cooling · 14–30 days</dt><dd>48</dd></div>
+            <div class="kpi"><dt>Actioned this week</dt><dd>36</dd></div>
+          </dl>
+          <p class="ui__note">110 quotes need following up — no activity in 30+ days.</p>
+        </div>
+      </div>
+
+    </div>
+    <p class="ui__caption">Interface shown with placeholder customers and values. Real quote data never leaves your tenant.</p>
+
+    <div class="whatsnext reveal">
+      <p class="whatsnext__k">What comes next, led by the customer</p>
+      <ul class="whatsnext__list">
+        <li><b>Shipping</b><span>Quote capture, staging and follow-up. Nothing relies on memory.</span></li>
+        <li><b>In build</b><span>An agent that surfaces the opportunity and guides the margin before the price goes out.</span></li>
+        <li><b>Where it goes</b><span>What you won on every project, at what margin, and what to price next time.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================================
+     8 — Who it's for (light band)
+     ====================================================================== -->
+<section class="section section--light" id="who">
+  <div class="container">
+    <p class="label">Who it&rsquo;s for</p>
+    <h2 class="h2 reveal">Built for trade suppliers.</h2>
+    <p class="lead reveal reveal-2" style="margin-top:1rem">If you quote out of an ERP and chase from memory, this is for you.</p>
+
+    <ul class="verticals reveal reveal-2">
+      <li><b>Builders merchants</b><span>Timber, blocks, bagged goods and the trade counter.</span></li>
+      <li><b>Electrical wholesale</b><span>Cable, containment, lighting and switchgear.</span></li>
+      <li><b>Plumbing and heating</b><span>Boilers, pipe, bathrooms and renewables.</span></li>
+      <li><b>Civils and groundworks</b><span>Drainage, ducting and the heavy side.</span></li>
+      <li><b>Timber and sheet materials</b><span>Sawn, engineered, sheet and mouldings.</span></li>
+      <li><b>Stone and hard landscaping</b><span>Paving, walling, natural and manufactured.</span></li>
+    </ul>
+
+    <p class="verticals__turn reveal">Six different businesses. The same three people, with the same problem.</p>
+
+    <div class="roles reveal">
+      <article class="role">
+        <h3>Sales reps</h3>
+        <p>One list, in your inbox, before you get in the van. Nothing to log into, and nothing to type up after.</p>
+      </article>
+      <article class="role">
+        <h3>Branch managers</h3>
+        <p>What your branch has out, what has gone quiet, and what actually got chased &mdash; without having to ask anyone.</p>
+      </article>
+      <article class="role">
+        <h3>Sales directors</h3>
+        <p>The same picture across every branch, on the same definitions, for the first time.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================================
+     9 — Why us
+     ====================================================================== -->
+<section class="section" id="why">
+  <div class="container">
+    <p class="label">Why us</p>
+    <h2 class="h2 reveal">We are not consultants who found a market.</h2>
+    <p class="lead reveal reveal-2" style="margin-top:1rem">One of us grew up inside these businesses. The other spent his career turning messy real-world systems into software that holds up when it matters. We started by sitting down and asking about the day, not pitching the idea.</p>
+
+    <div class="records-drives reveal reveal-2">
+      <div class="rd-item">
+        <span class="rd-label">Your ERP</span>
+        <span class="rd-text">Records what happened</span>
+      </div>
+      <span class="rd-arrow" aria-hidden="true">→</span>
+      <div class="rd-item rd-item--us">
+        <span class="rd-label">QuoteTrack</span>
+        <span class="rd-text">Drives what happens next</span>
+      </div>
+    </div>
+
+    <div class="quotes quotes--row reveal">
+      <figure class="quote">
+        <blockquote>&ldquo;We have been looking around the market for the last two years &mdash; and what we found is that the CRM-first systems are overkill, and the other bits are finance tools more so than sales rep enablers. There is a gap.&rdquo;</blockquote>
+        <cite>Sales Director &middot; builders merchant, Ireland</cite>
+      </figure>
+      <figure class="quote">
+        <blockquote>&ldquo;I have never seen so much data and so little insight from our systems.&rdquo;</blockquote>
+        <cite>Commercial Director &middot; builders merchant, UK</cite>
+      </figure>
+      <figure class="quote">
+        <blockquote>&ldquo;We&rsquo;re trying to reduce the time it takes to build a quote from two hours down to a couple of minutes.&rdquo;</blockquote>
+        <cite>Head of Sales &middot; national electrical distributor</cite>
+      </figure>
+    </div>
+
+    <div class="why-foot reveal">
+      <p class="counter"><b class="num"><span data-count-to="40">40</span>+</b> <span>discovery calls across Ireland and the UK before we wrote a line of product code.</span></p>
+      <a class="btn btn--ghost btn--sm" href="about.html">Meet the founders</a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================================
+     9 — CTA
+     ====================================================================== -->
+<section class="section cta" id="demo">
+  <div class="container">
+    <p class="label">Talk to us</p>
+    <h2 class="h2">See it against your own quotes.</h2>
+    <p class="lead" style="margin-top:1rem">Thirty minutes. We will show you the product running, and what it would look like on your ERP and your branches.</p>
+
+    <div class="cta__grid">
+    <form class="form" action="https://formspree.io/f/mgorjjjd" method="POST">
+      <div class="form__row">
+        <div class="field">
+          <label for="name">Your name</label>
+          <input type="text" id="name" name="name" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="email">Work email</label>
+          <input type="email" id="email" name="email" autocomplete="email" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="company">Company</label>
+        <input type="text" id="company" name="company" autocomplete="organization">
+      </div>
+      <div class="field">
+        <label for="message">Anything useful to know</label>
+        <textarea id="message" name="message" placeholder="Number of reps, branches, which ERP you run…"></textarea>
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn btn--primary">Request a demo</button>
+      </div>
+      <p class="form__note">Or email <a href="mailto:thomas@quotetrack.io" style="color:var(--signal)">thomas@quotetrack.io</a> directly.</p>
+    </form>
+
+    <div class="guide" id="guide">
+      <h3 class="h3">Free guide — quote follow-up that actually works</h3>
+      <p>Five process fixes for builders merchants. No product pitch in it.</p>
+
+      <form class="form" id="guide-form" action="https://formspree.io/f/mqeroknw" method="POST">
+        <input type="hidden" name="_next" value="https://www.quotetrack.io/assets/quote-followup-guide.pdf">
+        <div class="form__row">
+          <div class="field">
+            <label for="g-name">Your name</label>
+            <input type="text" id="g-name" name="name" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="g-company">Company</label>
+            <input type="text" id="g-company" name="company" autocomplete="organization" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="g-email">Email</label>
+          <input type="email" id="g-email" name="email" autocomplete="email" required>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn btn--ghost">Send me the guide</button>
+        </div>
+      </form>
+
+      <div class="guide-done" id="guide-done">
+        <p style="color:var(--white);font-weight:600">That’s away. You can download it here too.</p>
+        <div class="actions" style="margin-top:.85rem">
+          <a class="btn btn--primary" href="assets/quote-followup-guide.pdf" download>Download the guide (PDF)</a>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <div>
+      <a class="wordmark" href="/" aria-label="QuoteTrack — home" style="margin-bottom:.9rem">
+        <img src="assets/logo-dark.svg" width="130" height="28" alt="QuoteTrack" loading="lazy">
+      </a>
+      <p>Open-quote intelligence for trade distributors.<br>
+      © 2026 QuoteTrack Limited · <a href="mailto:thomas@quotetrack.io">thomas@quotetrack.io</a></p>
+    </div>
+    <nav aria-label="Footer">
+      <a href="#gap">The gap</a>
+      <a href="#how">How it works</a>
+      <a href="#product">Product</a>
+      <a href="#who">Who it's for</a>
+      <a href="about.html">About</a>
+      <a href="https://app.quotetrack.io">Sign in</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasViewTimeline = window.CSS && CSS.supports && CSS.supports('animation-timeline', 'view()');
+  var hasScrollTimeline = window.CSS && CSS.supports && CSS.supports('animation-timeline', 'scroll()');
+
+  /* --- Content reveals: one-shot, so nothing ever un-reveals --- */
+  if (!reduce && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  }
+
+  /* --- Decorative scroll-linked bits, where view() is unavailable --- */
+  if (!reduce && !hasViewTimeline && 'IntersectionObserver' in window) {
+    var dio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); dio.unobserve(e.target); }
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.journey__rail').forEach(function (el) {
+      dio.observe(el);
+    });
+  }
+
+  /* --- The green rail, where scroll() timelines are unavailable --- */
+  if (!reduce && !hasScrollTimeline) {
+    var fill = document.querySelector('.scroll-rail__fill');
+    if (fill) {
+      var ticking = false;
+      var update = function () {
+        var h = document.documentElement.scrollHeight - window.innerHeight;
+        var p = h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)) : 0;
+        fill.style.setProperty('--scroll-progress', p.toFixed(4));
+        ticking = false;
+      };
+      window.addEventListener('scroll', function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      window.addEventListener('resize', update, { passive: true });
+      update();
+    }
+  }
+
+  /* --- Count-ups. The final value is already in the HTML, so with JS off
+         or motion reduced the number is simply correct and static. --- */
+  if (!reduce && 'IntersectionObserver' in window) {
+    var counters = document.querySelectorAll('[data-count-to]');
+    var cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        cio.unobserve(e.target);
+        var el = e.target;
+        var to = parseInt(el.getAttribute('data-count-to'), 10);
+        if (isNaN(to)) return;
+        var start = null;
+        var dur = 1000;
+        el.textContent = '0';
+        var tick = function (t) {
+          if (start === null) start = t;
+          var k = Math.min(1, (t - start) / dur);
+          var eased = 1 - Math.pow(1 - k, 3);
+          el.textContent = String(Math.round(to * eased));
+          if (k < 1) requestAnimationFrame(tick); else el.textContent = String(to);
+        };
+        requestAnimationFrame(tick);
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(function (el) { cio.observe(el); });
+  }
+
+  /* --- The "today vs with QuoteTrack" duel: auto-loops, pauses on hover
+         and focus, and lets the reader flip it by hand. Both panels stay in
+         the DOM (and the accessibility tree) — the crossfade is visual only,
+         and the loop never runs with reduced motion (no html.js class). --- */
+  if (!reduce && 'IntersectionObserver' in window) {
+    var duel = document.getElementById('duel');
+    if (duel) {
+      var tabs = duel.querySelectorAll('.duel__tab');
+      var active = 'asis';
+      var timer = null;
+      var inView = false;
+      var hovering = false;
+
+      function apply(s, sweep) {
+        active = s;
+        duel.classList.toggle('is-super', s === 'super');
+        tabs.forEach(function (t) {
+          t.setAttribute('aria-pressed', String(t.getAttribute('data-tab') === s));
         });
-
-        // Carousel
-        let current = 0;
-        const slides = document.querySelectorAll('.quote-slide');
-        const dots = document.querySelectorAll('.quote-dot');
-        let timer = setInterval(nextSlide, 4000);
-
-        function goToSlide(n) {
-            slides[current].classList.remove('active');
-            dots[current].classList.remove('active');
-            current = n;
-            slides[current].classList.add('active');
-            dots[current].classList.add('active');
-            clearInterval(timer);
-            timer = setInterval(nextSlide, 4000);
+        if (sweep) {
+          duel.classList.remove('is-sweeping');
+          void duel.offsetWidth; /* restart the animation */
+          duel.classList.add('is-sweeping');
         }
+      }
+      function clearTimer() { if (timer) { clearTimeout(timer); timer = null; } }
+      function schedule() {
+        clearTimer();
+        if (!inView || hovering) return;
+        timer = setTimeout(function () {
+          apply(active === 'asis' ? 'super' : 'asis', true);
+          schedule();
+        }, active === 'asis' ? 3400 : 4400);
+      }
 
-        function nextSlide() {
-            goToSlide((current + 1) % slides.length);
-        }
+      tabs.forEach(function (t) {
+        t.addEventListener('click', function () {
+          apply(t.getAttribute('data-tab'), true);
+          schedule();
+        });
+      });
 
-        // Close modals on outside click
-        window.onclick = function(event) {
-            const demo = document.getElementById('demo-modal');
-            const guide = document.getElementById('guide-modal');
-            if (event.target == demo) demo.style.display = 'none';
-            if (event.target == guide) guide.style.display = 'none';
-        }
-    </script>
+      duel.addEventListener('animationend', function (e) {
+        if (e.animationName === 'duel-sweep') duel.classList.remove('is-sweeping');
+      });
+
+      duel.addEventListener('mouseenter', function () { hovering = true; clearTimer(); });
+      duel.addEventListener('mouseleave', function () { hovering = false; schedule(); });
+      duel.addEventListener('focusin', function () { hovering = true; clearTimer(); });
+      duel.addEventListener('focusout', function () { hovering = false; schedule(); });
+
+      var vio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          inView = e.isIntersecting;
+          if (inView) { schedule(); } else { clearTimer(); }
+        });
+      }, { threshold: 0.25 });
+      vio.observe(duel);
+
+      apply('asis');
+    }
+  }
+
+  /* --- Guide form: submit in the background, reveal the download inline.
+         Without JS the form posts normally and Formspree redirects to
+         the PDF via the _next field. --- */
+  var gf = document.getElementById('guide-form');
+  var gd = document.getElementById('guide-done');
+  if (gf && gd && window.fetch) {
+    gf.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var btn = gf.querySelector('button[type="submit"]');
+      if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+      fetch(gf.action, {
+        method: 'POST',
+        body: new FormData(gf),
+        headers: { 'Accept': 'application/json' }
+      }).catch(function () { /* still give them the guide */ })
+        .then(function () {
+          gf.hidden = true;
+          gd.setAttribute('data-done', '1');
+          var link = gd.querySelector('a');
+          if (link) link.focus();
+        });
+    });
+  }
+})();
+</script>
 </body>
 </html>

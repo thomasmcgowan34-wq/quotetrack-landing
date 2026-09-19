@@ -1,0 +1,12 @@
+# 🔴 THIS REPOSITORY IS PUBLIC.
+# The rebuild brief quotes commercial material from an internal document. It is
+# a working note, not site content, and must never be committed here.
+REBUILD-BRIEF.md
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+
+# Local preview config, not site content
+.claude/
